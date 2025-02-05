@@ -1,0 +1,2 @@
+class AlcoholLog < ApplicationRecord
+end

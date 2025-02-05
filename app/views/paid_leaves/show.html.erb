@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @paid_leafe %>
+
+<div>
+  <%= link_to "Edit this paid leave", edit_paid_leafe_path(@paid_leafe) %> |
+  <%= link_to "Back to paid leaves", paid_leaves_path %>
+
+  <%= button_to "Destroy this paid leave", @paid_leafe, method: :delete %>
+</div>

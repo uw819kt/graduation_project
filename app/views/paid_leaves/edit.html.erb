@@ -1,0 +1,12 @@
+<% content_for :title, "Editing paid leave" %>
+
+<h1>Editing paid leave</h1>
+
+<%= render "form", paid_leafe: @paid_leafe %>
+
+<br>
+
+<div>
+  <%= link_to "Show this paid leave", @paid_leafe %> |
+  <%= link_to "Back to paid leaves", paid_leaves_path %>
+</div>

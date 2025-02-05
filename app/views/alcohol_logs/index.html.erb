@@ -1,0 +1,16 @@
+<p style="color: green"><%= notice %></p>
+
+<% content_for :title, "Alcohol logs" %>
+
+<h1>Alcohol logs</h1>
+
+<div id="alcohol_logs">
+  <% @alcohol_logs.each do |alcohol_log| %>
+    <%= render alcohol_log %>
+    <p>
+      <%= link_to "Show this alcohol log", alcohol_log %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New alcohol log", new_alcohol_log_path %>

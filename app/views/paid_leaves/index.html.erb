@@ -1,0 +1,16 @@
+<p style="color: green"><%= notice %></p>
+
+<% content_for :title, "Paid leaves" %>
+
+<h1>Paid leaves</h1>
+
+<div id="paid_leaves">
+  <% @paid_leaves.each do |paid_leafe| %>
+    <%= render paid_leafe %>
+    <p>
+      <%= link_to "Show this paid leave", paid_leafe %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New paid leave", new_paid_leafe_path %>
