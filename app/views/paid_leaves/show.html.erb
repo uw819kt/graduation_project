@@ -1,10 +1,64 @@
 <p style="color: green"><%= notice %></p>
 
-<%= render @paid_leafe %>
+<h1><%= Date.today.year %>Paid leaves Show</h1>
 
+<p>department&nbsp;&nbsp;<%= @paid_leafe.user.department %></p>
+<p>name&nbsp;&nbsp;<%= @paid_leafe.user.name %></p>
+
+<table>
+  <tbody>
+      <tr>
+        <td colspan="2">Basis</td>
+        <td colspan="2"><%= @paid_leafe.base_date.strftime("%Y年%m月%d日") %></td>
+      </tr>
+      <tr>
+        <td colspan="2">Validity Period</td>
+        <td colspan="2"><%= "#{@paid_leafe.base_date.strftime("%Y年%m月%d日")}～#{((@paid_leafe.base_date.next_year - 1).strftime("%Y年%m月%d日"))}" %></td>
+      </tr>
+      <tr>
+        <td>Total Days</td>
+        <td><%= @total_days %></td>
+
+        <td>Carry Over</td>
+        <td><%= @carry_over %></td>
+
+        <td>Granted This Year</td>
+        <td><%= @plan %></td>
+      </tr>
+  <tbody>
+</table>
+<table>
+  <thead>
+    <tr>
+      <th>Number</th>
+      <th>Application Date</th>
+      <th>Remaining Days</th>
+      <th>Personal Stamp</th>
+      <th>Approval Stamp</th>
+      <th>Remarks</th>
+      <th>Applicable</th>
+    </tr>
+  </thead>
+    
+  <tbody>
+    <% @paid_leafe.approvals.each_with_index do |approval, index| %>
+      <tr>
+        <td><%= index + 1 %></td>
+        <td><%= approval.request_date.strftime("%Y年%m月%d日") %></td>
+        <td><%= approval.acquisition_date.strftime("%Y年%m月%d日") %></td>
+        <td></td> <!-- 空のセル -->
+        <td></td> <!-- 空のセル -->
+        <td><%= approval.paid_remarks %></td>
+        <td><%= approval.paid_applicable %></td>
+
+        <div>
+          <td><%= link_to "Edit this paid leave", edit_paid_leafe_path(@paid_leafe.id) %></td>
+        </div>
+      </tr>      
+    <% end %>
+  </tbody>
+</table>
+  
 <div>
-  <%= link_to "Edit this paid leave", edit_paid_leafe_path(@paid_leafe) %> |
   <%= link_to "Back to paid leaves", paid_leaves_path %>
-
-  <%= button_to "Destroy this paid leave", @paid_leafe, method: :delete %>
 </div>

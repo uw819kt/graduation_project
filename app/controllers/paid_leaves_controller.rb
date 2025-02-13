@@ -3,16 +3,43 @@ class PaidLeavesController < ApplicationController
 
   # GET /paid_leaves or /paid_leaves.json
   def index
-    @paid_leaves = PaidLeave.all
-  end
+    @paid_leafe = PaidLeave.all
+    @users = User.all
+    @alcohol_log = AlcoholLog.all
+    @approval = Approval.all
+    
+    user = User.all
+    part_time = PaidLeave.find_by(user_id: user.ids).part_time
+    approvals = Approval.all
+    classification = PaidLeave.pluck(:classification)
 
+    service = Service.new(user, approvals)
+    @achievements = service.achievements
+    @plan = service.plan
+    @items = service.items
+  end
+  
   # GET /paid_leaves/1 or /paid_leaves/1.json
   def show
+    @users = User.find(params[:id])
+
+    user = User.all
+    part_time = PaidLeave.find_by(user_id: user.ids).part_time
+    approvals = Approval.all
+    classification = PaidLeave.pluck(:classification)
+
+    service = Service.new(user, approvals)
+    @achievements = service.achievements
+    @plan = service.plan
+    @total_days = service.total_days
+    @items = service.items
+    @carry_over = service.carry_over
   end
 
   # GET /paid_leaves/new
   def new
     @paid_leafe = PaidLeave.new
+    @paid_leafe.approvals.build
   end
 
   # GET /paid_leaves/1/edit
@@ -65,6 +92,6 @@ class PaidLeavesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def paid_leafe_params
-      params.require(:paid_leafe).permit(:joining_date, :base_date, :part_time, :user_id, :paid_remarks)
+      params.require(:paid_leafe).permit(:joining_date, :base_date, :part_time, :user_id, :paid_remarks, approve_attributes: [:request_date, :acquisition_date, :paid_remarks])
     end
 end

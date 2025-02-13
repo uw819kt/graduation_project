@@ -1,16 +1,71 @@
-<p style="color: green"><%= notice %></p>
 
-<% content_for :title, "Alcohol logs" %>
 
 <h1>Alcohol logs</h1>
 
-<div id="alcohol_logs">
-  <% @alcohol_logs.each do |alcohol_log| %>
-    <%= render alcohol_log %>
-    <p>
-      <%= link_to "Show this alcohol log", alcohol_log %>
-    </p>
-  <% end %>
-</div>
+<p>興和電気株式会社</p>
+<!-- 検索フォーム -->
+<%= Date.today.strftime("%Y年%m月%d日") %>
+
+<table>
+  <tbody>
+    <tr>
+      <td>Car Number</td>
+      <td colspan="7">Before Driving</td>
+      <td colspan="7">After Driving</td>
+      <td>Confirmation Field</td>
+    </tr>
+
+    <tr>
+      <td>Car Number</td>
+      <td>check_time</td>
+      <td>confirmation</td>
+      <td>detector_used</td>
+      <td>result</td>
+      <td>condition</td>
+      <td>log_remarks</td>
+      <td>confirmer</td>
+      <td>check_time</td>
+      <td>confirmation</td>
+      <td>detector_used</td>
+      <td>result</td>
+      <td>condition</td>
+      <td>log_remarks</td>
+      <td>confirmer</td>
+      <td>admin</td>
+    </tr>
+    <tr>
+      <td>
+        <% @alcohol_log.each do |alcohol_log| %>
+          <% if alcohol_log.car.private_car.nil? || alcohol_log.car.private_car.empty? %>
+            <%= alcohol_log.car.company_car %>
+          <% else %>
+            <%= alcohol_log.car.private_car %>
+          <% end %>
+        <% end %>
+      </td>
+
+    <% @before_driving_logs.each do |before_alcohol_log| %>
+      <td><%= before_alcohol_log.check_time.in_time_zone('Asia/Tokyo').strftime('%Y-%m-%d %H:%M:%S') %></td>
+      <td><%= before_alcohol_log.confirmation %></td>
+      <td><%= before_alcohol_log.detector_used %></td>
+      <td><%= before_alcohol_log.result %></td>
+      <td><%= before_alcohol_log.condition %></td>
+      <td><%= before_alcohol_log.log_remarks %></td>
+      <td></td> <!-- 空欄 -->
+    <% end %>
+    <% @after_driving_logs.each do |after_alcohol_log| %>
+      <td><%= after_alcohol_log.check_time.in_time_zone('Asia/Tokyo').strftime('%Y-%m-%d %H:%M:%S') %></td>
+      <td><%= after_alcohol_log.confirmation %></td>
+      <td><%= after_alcohol_log.detector_used %></td>
+      <td><%= after_alcohol_log.result %></td>
+      <td><%= after_alcohol_log.condition %></td>
+      <td><%= after_alcohol_log.log_remarks %></td>
+      <td></td> <!-- 空欄 -->
+      <td></td> <!-- 空欄 -->
+    <% end %>
+    </tr>
+  <tbody>
+<table>
+
 
 <%= link_to "New alcohol log", new_alcohol_log_path %>

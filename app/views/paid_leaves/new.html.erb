@@ -1,8 +1,39 @@
-<% content_for :title, "New paid leave" %>
+<%= form_with(model: @paid_leafe) do |form| %>
+  <% if @paid_leafe.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(@paid_leafe.errors.count, "error") %> prohibited this paid_leafe from being saved:</h2>
 
-<h1>New paid leave</h1>
+      <ul>
+        <% @paid_leafe.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
 
-<%= render "form", paid_leafe: @paid_leafe %>
+  <h1>New paid leave</h1>
+  
+  <%= form.fields_for :approvals do |approval_form| %>
+    <div>
+      <%= approval_form.label :request_date %>
+      <%= approval_form.date_field :request_date %>
+    </div>
+
+    <div>
+      <%= approval_form.label :acquisition_date %>
+      <%= approval_form.date_field :acquisition_date %>
+    </div>
+
+    <div>
+      <%= approval_form.label :paid_remarks %>
+      <%= approval_form.text_area :paid_remarks %>
+    </div>
+
+    <div>
+      <%= approval_form.submit %>
+    </div>
+  <% end %>
+<% end %>
 
 <br>
 

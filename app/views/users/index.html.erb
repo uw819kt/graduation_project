@@ -1,16 +1,46 @@
 <p style="color: green"><%= notice %></p>
 
-<% content_for :title, "Users" %>
+
 
 <h1>Users</h1>
 
-<div id="users">
-  <% @users.each do |user| %>
-    <%= render user %>
-    <p>
-      <%= link_to "Show this user", user %>
-    </p>
-  <% end %>
-</div>
+<table>
+  <tbody>
+    <tr>
+      <td>name</td>
+      <td>department</td>
+      <td>email</td>
+      <td>car number</td>
+      <td>joining_date</td>
+    </tr>
 
-<%= link_to "New user", new_user_path %>
+    <tr>
+    <% @users.each do |user| %>
+      <td><%= user.name %></td>
+      <td><%= user.department %></td>
+      <td><%= user.email %></td>
+      <td>
+        <% user.cars.each do |car| %>  
+          <% if car.private_car.nil? || car.private_car.empty? %>
+            <%= car.company_car %>
+          <% else %>
+            <%= car.private_car %>
+          <% end %>
+        <% end %>
+      </td>
+      <td>
+        <% user.paid_leaves.each do |paid_leave| %>
+          <%= paid_leave.joining_date.strftime("%Y年%m月%d日") %>
+        <% end %> 
+      </td>
+    
+      <td>
+        <div>
+          <%= link_to "Edit user", edit_user_path(user) %>
+          <%= link_to "Delete user", users_path, data: { turbo_method: :delete } %>
+        </div>
+      </td> 
+    </tr>
+    <% end %>
+  <tbody>
+</table>

@@ -1,10 +1,72 @@
-<p style="color: green"><%= notice %></p>
 
-<%= render @alcohol_log %>
+
+<h1>alcohole log show</h1>
+<p>department&nbsp;&nbsp;<%= @alcohol_log.user.department %></p>
+<p>name&nbsp;&nbsp;<%= @alcohol_log.user.name %></p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>Car Number</td>
+      <td colspan="7">Before Driving</td>
+      <td colspan="7">After Driving</td>
+      <td>Confirmation Field</td>
+    </tr>
+
+    <tr>
+      <td>Car Number</td>
+      <td>check_time</td>
+      <td>confirmation</td>
+      <td>detector_used</td>
+      <td>result</td>
+      <td>condition</td>
+      <td>log_remarks</td>
+      <td>confirmer</td>
+      <td>check_time</td>
+      <td>confirmation</td>
+      <td>detector_used</td>
+      <td>result</td>
+      <td>condition</td>
+      <td>log_remarks</td>
+      <td>confirmer</td>
+      <td>admin</td>
+    </tr>
+    <tr>
+      <td>
+        <% if @alcohol_log.car.private_car.nil? || @alcohol_log.car.private_car.empty? %>
+          <%= @alcohol_log.car.company_car %>
+        <% else %>
+          <%= @alcohol_log.car.private_car %>
+        <% end %>
+      </td>
+
+    <% @before_driving_logs.each do |log| %>
+      <td><%= log.check_time.in_time_zone('Asia/Tokyo').strftime('%Y-%m-%d %H:%M:%S') %></td>
+      <td><%= log.confirmation %></td>
+      <td><%= log.detector_used %></td>
+      <td><%= log.result %></td>
+      <td><%= log.condition %></td>
+      <td><%= log.log_remarks %></td>
+      <td></td> <!-- 空欄 -->
+    <% end %>
+    <% @after_driving_logs.each do |log| %>
+      <td><%= log.check_time.in_time_zone('Asia/Tokyo').strftime('%Y-%m-%d %H:%M') %></td>
+      <td><%= log.confirmation %></td>
+      <td><%= log.detector_used %></td>
+      <td><%= log.result %></td>
+      <td><%= log.condition %></td>
+      <td><%= log.log_remarks %></td>
+      <td></td> <!-- 空欄 -->
+      <td></td> <!-- 空欄 -->
+    <% end %>
+    </tr>
+  <tbody>
+<table>
+
+
+
 
 <div>
-  <%= link_to "Edit this alcohol log", edit_alcohol_log_path(@alcohol_log) %> |
-  <%= link_to "Back to alcohol logs", alcohol_logs_path %>
-
-  <%= button_to "Destroy this alcohol log", @alcohol_log, method: :delete %>
+  <%= link_to "Back to alcohol logs", alcohol_logs_path %> |
+  <%= link_to "Edit this alcohol log", edit_alcohol_log_path(@alcohol_log) %>
 </div>

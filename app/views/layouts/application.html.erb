@@ -7,10 +7,20 @@
     <%= csp_meta_tag %>
 
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+
   </head>
 
   <body>
+    <header>
+      <%= link_to "admin user index", users_path %>
+      <%= link_to "admin user new", new_user_path %>
+      <%= link_to "alcohole log index", alcohol_logs_path %>
+      <%= link_to "alcohole log new", new_alcohol_log_path %>
+      <%= link_to "alcohole log show", alcohol_log_path(id: AlcoholLog.ids) %>
+      <%= link_to "paid leave new", new_paid_leafe_path %>
+      <%= link_to "paid leave index", paid_leaves_path %>
+    </header>
+
     <%= yield %>
   </body>
 </html>

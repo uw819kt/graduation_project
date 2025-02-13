@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_02_05_054900) do
+ActiveRecord::Schema[7.2].define(version: 2025_02_06_151543) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -19,7 +19,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_05_054900) do
     t.integer "confirmation", null: false
     t.boolean "detector_used", default: true, null: false
     t.float "result", null: false
-    t.boolean "condition", default: false, null: false
+    t.integer "condition", null: false
     t.text "log_remarks"
     t.bigint "user_id", null: false
     t.bigint "car_id", null: false
@@ -38,6 +38,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_05_054900) do
     t.bigint "paid_leave_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "paid_remarks"
     t.index ["paid_leave_id"], name: "index_approvals_on_paid_leave_id"
     t.index ["user_id"], name: "index_approvals_on_user_id"
   end
@@ -68,7 +69,6 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_05_054900) do
     t.boolean "part_time", default: false, null: false
     t.integer "classification"
     t.bigint "user_id", null: false
-    t.text "paid_remarks"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_paid_leaves_on_user_id"
@@ -81,6 +81,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_05_054900) do
     t.bigint "paid_leave_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "paid_remarks"
     t.index ["paid_leave_id"], name: "index_requests_on_paid_leave_id"
     t.index ["user_id"], name: "index_requests_on_user_id"
   end

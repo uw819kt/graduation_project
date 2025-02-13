@@ -4,6 +4,8 @@ class UsersController < ApplicationController
   # GET /users or /users.json
   def index
     @users = User.all
+    @cars = Car.all
+    @paid_leaves = PaidLeave.all
   end
 
   # GET /users/1 or /users/1.json
@@ -13,10 +15,23 @@ class UsersController < ApplicationController
   # GET /users/new
   def new
     @user = User.new
+    @paid_leave = PaidLeave.new
   end
 
   # GET /users/1/edit
   def edit
+    @paid_leave = @user.paid_leaves.build
+    @approval = Approval.all
+
+    user = User.all
+    part_time = PaidLeave.find_by(user_id: user.ids).part_time
+    approvals = Approval.all
+    classification = PaidLeave.pluck(:classification)
+
+    service = Service.new(user, approvals)
+    @plan = service.plan
+    @carry_over = service.carry_over
+    @total_days = service.total_days
   end
 
   # POST /users or /users.json

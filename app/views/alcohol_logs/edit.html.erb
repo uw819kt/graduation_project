@@ -2,11 +2,53 @@
 
 <h1>Editing alcohol log</h1>
 
-<%= render "form", alcohol_log: @alcohol_log %>
+<%= form_with model: @alcohol_log do |form| %>
+  <div>
+    <%= form.label :driving_status %>
+    <%= form.select :driving_status, @alcohol_log.class.driving_statuses.keys, { include_blank: true } %>
+  </div>
 
+  <div>
+    <%= form.label :company_car %>
+    <%= form.text_field :company_car %>
+  </div>
+
+  <div>
+    <%= form.label :private_car %>
+    <%= form.text_field :private_car %>
+  </div>
+
+  <div>
+    <%= form.label :confirmation %>
+    <%= form.select :confirmation, @alcohol_log.class.confirmations.keys %>
+  </div>
+
+  <div>
+    <%= form.label :detector_used %>
+    <%= form.check_box :detector_used, {checked: true}, true, false  %>
+  </div>
+
+  <div>
+    <%= form.label :result %>
+    <%= form.text_field :result %>
+  </div>
+
+  <div>
+    <%= form.label :condition %>
+    <%= form.select :condition, @alcohol_log.class.conditions.keys %>
+  </div>
+
+  <div>
+    <%= form.label :log_remarks %>
+    <%= form.text_area :log_remarks %>
+  </div>
+
+    <%= form.submit %>
+<% end %>
 <br>
 
 <div>
-  <%= link_to "Show this alcohol log", @alcohol_log %> |
-  <%= link_to "Back to alcohol logs", alcohol_logs_path %>
+<%= link_to "Back to alcohol logs", alcohol_logs_path %>
 </div>
+
+

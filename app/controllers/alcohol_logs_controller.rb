@@ -3,11 +3,15 @@ class AlcoholLogsController < ApplicationController
 
   # GET /alcohol_logs or /alcohol_logs.json
   def index
-    @alcohol_logs = AlcoholLog.all
+    @alcohol_log = AlcoholLog.all
+    @before_driving_logs = AlcoholLog.where(driving_status: 0)
+    @after_driving_logs = AlcoholLog.where(driving_status: 1)
   end
 
   # GET /alcohol_logs/1 or /alcohol_logs/1.json
   def show
+    @before_driving_logs = AlcoholLog.where(driving_status: 0)
+    @after_driving_logs = AlcoholLog.where(driving_status: 1)
   end
 
   # GET /alcohol_logs/new
@@ -22,6 +26,7 @@ class AlcoholLogsController < ApplicationController
   # POST /alcohol_logs or /alcohol_logs.json
   def create
     @alcohol_log = AlcoholLog.new(alcohol_log_params)
+    @alcohol_log.check_time = Time.zone.now
 
     respond_to do |format|
       if @alcohol_log.save
@@ -65,6 +70,6 @@ class AlcoholLogsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def alcohol_log_params
-      params.require(:alcohol_log).permit(:check_time, :confirmation)
+      params.require(:alcohol_log).permit(:check_time, :confirmation, :detector_used, :result, :condition, :log_remarks, :user_id, :car_id, :driving_status)
     end
 end
