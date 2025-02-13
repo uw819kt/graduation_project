@@ -1,11 +1,14 @@
 class Service
 # 計算用クラス
-  attr_accessor :user, :approvals, :paid_leafe
+  attr_accessor :user, :approvals, :paid_leafe, :adjustment_value, :adjustment_plan_value, :adjustment_carry_value
 
-  def initialize(user, approvals)
+  def initialize(user, approvals, adjustment_value = 0, adjustment_plan_value = 0, adjustment_carry_value = 0)
     @user = user
     @paid_leafe = paid_leafe
     @approvals = approvals
+    @adjustment_value = adjustment_value
+    @adjustment_plan_value = adjustment_plan_value
+    @adjustment_carry_value = adjustment_carry_value
   end
 
   def carry_over # 前年度繰越分
@@ -14,12 +17,22 @@ class Service
     @carry_over
   end
 
+  def adjusted_carry_over # 前年度繰越分(調整)
+    carry_over = self.carry_over
+    @adjusted_carry_over = carry_over + @adjustment_carry_value
+  end
+
   def total_days # 有給保有日数
     carry_over = self.carry_over
     plan = self.plan
     achievements = self.achievements
     
     @total_days = (carry_over + plan.to_i) - achievements.to_i
+  end
+
+  def adjusted_total_days # 有給保有日数(調整)
+    total_days = self.total_days
+    @adjusted_total_days = total_days + @adjustment_value
   end
 
   def achievements # 有給休暇取得数（実績）
@@ -39,10 +52,14 @@ class Service
     @years_of_service = reference.map { |num| num.round(1)}.join
   end
 
+  def adjusted_plan # 有給休暇付与予定日数(調整)
+    plan = self.plan
+    @adjusted_plan = total_days + @adjustment_plan_value
+  end
+
   def plan # 有給休暇付与予定日数
     years_of_service = self.years_of_service.to_f
     part_time_values = PaidLeave.where(user_id: @user).pluck(:part_time)
-    # binding.irb
 
     if part_time_values.include?(false) # 正社員の場合
       if 0.5 <= years_of_service && years_of_service < 1.5

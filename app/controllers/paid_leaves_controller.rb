@@ -92,6 +92,6 @@ class PaidLeavesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def paid_leafe_params
-      params.require(:paid_leafe).permit(:joining_date, :base_date, :part_time, :user_id, :paid_remarks, approve_attributes: [:request_date, :acquisition_date, :paid_remarks])
+      params.require(:paid_leave).permit(:joining_date, :base_date, :part_time, :user_id, :paid_remarks, approve_attributes: [:request_date, :acquisition_date, :paid_remarks])
     end
 end

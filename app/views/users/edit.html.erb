@@ -76,20 +76,20 @@
 
   <div>
     <p>Total Days&nbsp;&nbsp;<%= @total_days %></p>
-    <%= paid_leaves_form.label :total_days %>
-    <%= paid_leaves_form.text_field :possession %>
+    <%= paid_leaves_form.label :adjustment_value, "Adjustment (add/subtract)" %>
+    <%= paid_leaves_form.number_field :adjustment_value, value: 0 %>
   </div>
 
   <div>
     <p>Possession&nbsp;&nbsp;<%= @plan %></p>
-    <%= paid_leaves_form.label :possession %> 
-    <%= paid_leaves_form.text_field :granted_piece %> 
+    <%= paid_leaves_form.label :adjustment_plan_value, "Adjustment (add/subtract)" %> 
+    <%= paid_leaves_form.number_field :adjustment_plan_value, value: 0 %> 
   </div>
 
   <div>
     <p>Carry Over&nbsp;&nbsp;<%= @carry_over %></p>
-    <%= paid_leaves_form.label :carry_over %> 
-    <%= paid_leaves_form.text_field :granted_piece %> 
+    <%= paid_leaves_form.label :adjustment_carry_over, "Adjustment (add/subtract)" %> 
+    <%= paid_leaves_form.number_field :adjustment_carry_over, value: 0 %> 
   </div>
 
   <div>

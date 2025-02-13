@@ -27,11 +27,17 @@ class UsersController < ApplicationController
     part_time = PaidLeave.find_by(user_id: user.ids).part_time
     approvals = Approval.all
     classification = PaidLeave.pluck(:classification)
+    adjustment_value = params[:adjustment_value].to_i
+    adjustment_plan_value = params[:adjustment_plan_value].to_i
+    adjustment_carry_value = params[:adjustment_carry_value].to_i
 
-    service = Service.new(user, approvals)
+    service = Service.new(user, approvals, adjustment_value)
     @plan = service.plan
     @carry_over = service.carry_over
     @total_days = service.total_days
+    @adjusted_total_days = service.adjusted_total_days
+    @adjusted_plan = service.adjusted_plan
+    @@adjusted_carry_over = service.adjusted_carry_over
   end
 
   # POST /users or /users.json

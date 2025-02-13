@@ -5,6 +5,13 @@ class PaidLeave < ApplicationRecord
   has_many :approvals
   accepts_nested_attributes_for :approvals
 
+  validates :joining_date, presence: true
+  validates :base_date, presence: true
+  validates :part_time, inclusion: { in: [true, false] }
+  validates :classification, presence: true
+  validates :user_id, presence: true
+
+
   enum :classification, {
     "4days_w": 0,
     "3days_w": 1,
