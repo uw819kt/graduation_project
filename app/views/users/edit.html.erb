@@ -1,102 +1,89 @@
-<%= form_with(model: @user) do |form| %>
-  <% if @user.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
+<%= form_with(model:  @registration_form, url: users_path, remote: false) do |form| %>  <h1>Editing user</h1>
 
-      <ul>
-        <% @user.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
+  <h2>basic information</h2>
+
+  <%= fields_for form.object.user do |form| %>
+    <div>
+      <%= form.label :name %>
+      <%= form.text_field :name %>
+    </div>
+
+    <div>
+     <%= form.label :email %>
+     <%= form.text_field :email %>
+    </div>
+
+    <div>
+      <%= form.label :department %>
+      <%= form.select :department, User.departments.keys, { include_blank: true } %>
+    </div>
+
+    <div>
+      <%= form.label :password_digest %>
+      <%= form.text_field :password_digest %>
     </div>
   <% end %>
 
-<h1>Editing user</h1>
+  <%= fields_for form.object.paid_leave do |form| %>
+    <div>
+      <%= form.label :joining_date %>
+      <%= form.date_field :joining_date %>
+    </div>
 
-<h2>basic information</h2>
+    <div>
+      <%= form.label :part_time %>
+      <%= form.check_box :part_time, {checked: false}, true, false  %>
+    </div>
 
-<%= form_with model: @user do |form| %>
-  <div>
-    <%= form.label :name %>
-    <%= form.text_field :name %>
-  </div>
+    <div>
+      <%= form.label :classification %>
+      <%= form.select :classification, PaidLeave.classifications.keys, { include_blank: true } %>
+    </div>
+  <% end %>
 
-  <div>
-    <%= form.label :email, style: "display: block" %>
-    <%= form.text_field :email %>
-  </div>
+  <%= fields_for form.object.car do |form| %>
+    <div>
+      <%= form.label :company_car %>
+      <%= form.text_field :company_car %>
+    </div>
 
-  <div>
-    <%= form.label :department %>
-    <%= form.select :department, @user.class.departments.keys, { include_blank: true } %>
-  </div>
-
-  <div>
-    <%= form.label :password_digest %>
-    <%= form.text_field :password_digest %>
-  </div>
-<% end %>
-
-<%= form.fields_for :paid_leaves do |paid_leaves_form| %>
-  <div>
-    <%= paid_leaves_form.label :joining_date %>
-    <%= paid_leaves_form.date_field :joining_date %>
-  </div>
-
-  <div>
-      <%= paid_leaves_form.label :part_time %>
-      <%= paid_leaves_form.check_box :part_time, {checked: false}, true, false  %>
-  </div>
-
-  <div>
-    <%= paid_leaves_form.label :classification %>
-    <%= paid_leaves_form.select :classification, @paid_leave.class.classifications.keys, { include_blank: true } %>
-  </div>
-<% end %>
-
-<%= form.fields_for :cars do |cars_form| %>
-  <div>
-    <%= cars_form.label :company_car %>
-    <%= cars_form.text_field :company_car %>
-  </div>
-
-  <div>
-    <%= cars_form.label :private_car %>
-    <%= cars_form.text_field :private_car %>
-  </div>
-<% end %>
+    <div>
+      <%= form.label :private_car %>
+      <%= form.text_field :private_car %>
+    </div>
+  <% end %>
 
 <h2>paid leave information</h2>
 
-<%= form.fields_for :paid_leaves do |paid_leaves_form| %>
+<%= fields_for form.object.paid_leave do |form| %>
   <div>
-    <%= paid_leaves_form.label :base_date %>
-    <%= paid_leaves_form.date_field :base_date %>
+    <%= form.label :base_date %>
+    <%= form.date_field :base_date %>
   </div>
 
   <div>
     <p>Total Days&nbsp;&nbsp;<%= @total_days %></p>
-    <%= paid_leaves_form.label :adjustment_value, "Adjustment (add/subtract)" %>
-    <%= paid_leaves_form.number_field :adjustment_value, value: 0 %>
+    <%= form.label :adjustment_value, "Adjustment (add/subtract)" %>
+    <%= form.number_field :adjustment_value, value: 0 %>
   </div>
 
   <div>
     <p>Possession&nbsp;&nbsp;<%= @plan %></p>
-    <%= paid_leaves_form.label :adjustment_plan_value, "Adjustment (add/subtract)" %> 
-    <%= paid_leaves_form.number_field :adjustment_plan_value, value: 0 %> 
+    <%= form.label :adjustment_plan_value, "Adjustment (add/subtract)" %> 
+    <%= form.number_field :adjustment_plan_value, value: 0 %> 
   </div>
 
   <div>
     <p>Carry Over&nbsp;&nbsp;<%= @carry_over %></p>
-    <%= paid_leaves_form.label :adjustment_carry_over, "Adjustment (add/subtract)" %> 
-    <%= paid_leaves_form.number_field :adjustment_carry_over, value: 0 %> 
+    <%= form.label :adjustment_carry_over, "Adjustment (add/subtract)" %> 
+    <%= form.number_field :adjustment_carry_over, value: 0 %> 
   </div>
 <% end %>
 
-<%= form.fields_for :grants do |grants_form| %>
+<%= fields_for form.object.grant do |form| %>
   <div>
-    <%= grants_form.label :granted_piece %>
-    <%= grants_form.text_field :granted_piece %>
+    <%= form.label :granted_piece %>
+    <%= form.text_field :granted_piece %>
   </div>
 <% end %>
 

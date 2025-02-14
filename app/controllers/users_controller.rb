@@ -14,19 +14,12 @@ class UsersController < ApplicationController
 
   # GET /users/new
   def new
-    @user = User.new
-    @user.paid_leaves.build
-    @user.cars.build
-    # @paid_leave = PaidLeave.new
-    # @car = Car.new
-    # @user.paid_leaves.build
-    # @user.cars.build
+    @registration_form = RegistrationForm.new
   end
 
   # GET /users/1/edit
   def edit
-    @paid_leave = @user.paid_leaves
-    @grant = @user.grants.build
+    @registration_form = RegistrationForm.new
 
     user = User.all
     part_time = PaidLeave.find_by(user_id: user.ids).part_time
@@ -47,8 +40,11 @@ class UsersController < ApplicationController
 
   # POST /users or /users.json
   def create
-    @user = User.new(user_params)
-    if @user.save
+    @registration_form = RegistrationForm.new(user_attributes: user_params,
+                                              paid_leave_attributes: paid_leave_params,
+                                              car_attributes: car_params)
+
+    if @registration_form.save
       flash[:notice] = "User was successfully created."
       redirect_to users_path
     else
@@ -60,11 +56,9 @@ class UsersController < ApplicationController
   def update
     respond_to do |format|
       if @user.update(user_params)
-        format.html { redirect_to @user, notice: "User was successfully updated." }
-        format.json { render :show, status: :ok, location: @user }
+        redirect_to @user, notice: "User was successfully updated."
       else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
+        render :edit, status: :unprocessable_entity
       end
     end
   end
@@ -80,18 +74,21 @@ class UsersController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_user
-      @user = User.find(params[:id])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_user
+    @user = User.find(params[:id])
+  end
 
-    # Only allow a list of trusted parameters through.
-    def user_params
-      params.require(:user).permit(
-        :name, :mail, :department, :password_digest, :admin, 
-        paid_leaves_attributes: [:user_id, :joining_date, :part_time, :base_date, :classifications],
-        cars_attributes: [:user_id, :company_car, :private_car],
-        grants_attributes: [:user_id, :granted_piece]
-        )
-    end
+  # Only allow a list of trusted parameters through.
+  def user_params
+    params.require(:user).permit(:name, :mail, :department, :password_digest, :admin)
+  end
+
+  def paid_leave_params
+    params.require(:paid_leave).permit(:joining_date, :part_time, :classification, :base_date)
+  end
+
+  def car_params
+    params.require(:car).permit(:company_car, :private_car)
+  end
 end

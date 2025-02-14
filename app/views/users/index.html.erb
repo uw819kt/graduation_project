@@ -20,18 +20,14 @@
       <td><%= user.department %></td>
       <td><%= user.email %></td>
       <td>
-        <% user.cars.each do |car| %>  
-          <% if car.private_car.nil? || car.private_car.empty? %>
-            <%= car.company_car %>
-          <% else %>
-            <%= car.private_car %>
-          <% end %>
+        <% if user.car.private_car.nil? || user.car.private_car.empty? %>
+          <%= user.car.company_car %>
+        <% else %>
+          <%= user.car.private_car %>
         <% end %>
       </td>
       <td>
-        <% user.paid_leaves.each do |paid_leave| %>
-          <%= paid_leave.joining_date.strftime("%Y年%m月%d日") %>
-        <% end %> 
+        <%= user.paid_leave.joining_date.strftime("%Y年%m月%d日") %>
       </td>
     
       <td>

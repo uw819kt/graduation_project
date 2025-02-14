@@ -49,28 +49,19 @@ class PaidLeavesController < ApplicationController
   # POST /paid_leaves or /paid_leaves.json
   def create
     @paid_leafe = PaidLeave.new(paid_leafe_params)
-
-    respond_to do |format|
-      if @paid_leafe.save
-        format.html { redirect_to @paid_leafe, notice: "Paid leave was successfully created." }
-        format.json { render :show, status: :created, location: @paid_leafe }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @paid_leafe.errors, status: :unprocessable_entity }
-      end
+    if @paid_leafe.save
+      redirect_to @paid_leafe, notice: "Paid leave was successfully created."
+    else
+      render :new, status: :unprocessable_entity
     end
   end
 
   # PATCH/PUT /paid_leaves/1 or /paid_leaves/1.json
   def update
-    respond_to do |format|
-      if @paid_leafe.update(paid_leafe_params)
-        format.html { redirect_to @paid_leafe, notice: "Paid leave was successfully updated." }
-        format.json { render :show, status: :ok, location: @paid_leafe }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @paid_leafe.errors, status: :unprocessable_entity }
-      end
+    if @paid_leafe.update(paid_leafe_params)
+      redirect_to @paid_leafe, notice: "Paid leave was successfully updated."
+    else
+      render :edit, status: :unprocessable_entity
     end
   end
 

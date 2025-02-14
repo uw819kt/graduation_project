@@ -1,4 +1,4 @@
-<%= form_with(model: @paid_leafe) do |form| %>
+<%= form_with(model: @paid_leafe, remote: false) do |form| %>
   <% if @paid_leafe.errors.any? %>
     <div style="color: red">
       <h2><%= pluralize(@paid_leafe.errors.count, "error") %> prohibited this paid_leafe from being saved:</h2>
