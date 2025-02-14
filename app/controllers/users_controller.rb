@@ -15,13 +15,18 @@ class UsersController < ApplicationController
   # GET /users/new
   def new
     @user = User.new
-    @paid_leave = PaidLeave.new
+    @user.paid_leaves.build
+    @user.cars.build
+    # @paid_leave = PaidLeave.new
+    # @car = Car.new
+    # @user.paid_leaves.build
+    # @user.cars.build
   end
 
   # GET /users/1/edit
   def edit
-    @paid_leave = @user.paid_leaves.build
-    @approval = Approval.all
+    @paid_leave = @user.paid_leaves
+    @grant = @user.grants.build
 
     user = User.all
     part_time = PaidLeave.find_by(user_id: user.ids).part_time
@@ -43,15 +48,11 @@ class UsersController < ApplicationController
   # POST /users or /users.json
   def create
     @user = User.new(user_params)
-
-    respond_to do |format|
-      if @user.save
-        format.html { redirect_to @user, notice: "User was successfully created." }
-        format.json { render :show, status: :created, location: @user }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
-      end
+    if @user.save
+      flash[:notice] = "User was successfully created."
+      redirect_to users_path
+    else
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -86,6 +87,11 @@ class UsersController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def user_params
-      params.require(:user).permit(:name, :mail, :department, :password_digest, :admin)
+      params.require(:user).permit(
+        :name, :mail, :department, :password_digest, :admin, 
+        paid_leaves_attributes: [:user_id, :joining_date, :part_time, :base_date, :classifications],
+        cars_attributes: [:user_id, :company_car, :private_car],
+        grants_attributes: [:user_id, :granted_piece]
+        )
     end
 end

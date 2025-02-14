@@ -91,10 +91,12 @@
     <%= paid_leaves_form.label :adjustment_carry_over, "Adjustment (add/subtract)" %> 
     <%= paid_leaves_form.number_field :adjustment_carry_over, value: 0 %> 
   </div>
+<% end %>
 
+<%= form.fields_for :grants do |grants_form| %>
   <div>
-    <%= paid_leaves_form.label :granted_piece %>
-    <%= paid_leaves_form.text_field :granted_piece %>
+    <%= grants_form.label :granted_piece %>
+    <%= grants_form.text_field :granted_piece %>
   </div>
 <% end %>
 
