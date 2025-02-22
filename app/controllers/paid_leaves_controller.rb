@@ -3,20 +3,22 @@ class PaidLeavesController < ApplicationController
 
   # GET /paid_leaves or /paid_leaves.json
   def index
-    @paid_leafe = PaidLeave.all
-    @users = User.all
-    @alcohol_log = AlcoholLog.all
-    @approval = Approval.all
+    @users = User.includes(:paid_leave, :alcohol_logs, :approvals).all
+    @users = @users.order('paid_leaves.id ASC')
     
-    user = User.all
-    part_time = PaidLeave.find_by(user_id: user.ids).part_time
-    approvals = Approval.all
-    classification = PaidLeave.pluck(:classification)
+    @user_service = @users.map do |user|
+      approvals = Approval.where(user_id: user.id)
+      part_time = user.paid_leave.part_time
+      classification = user.paid_leave.classification
+      service = Service.new(user, approvals, part_time, classification)
 
-    service = Service.new(user, approvals)
-    @achievements = service.achievements
-    @plan = service.plan
-    @items = service.items
+      {
+        user: user,
+        discrimination: service.discrimination,
+        achievements: service.achievements,
+        items: service.items
+      }
+    end
   end
   
   # GET /paid_leaves/1 or /paid_leaves/1.json
@@ -24,13 +26,13 @@ class PaidLeavesController < ApplicationController
     @users = User.find(params[:id])
 
     user = User.all
-    part_time = PaidLeave.find_by(user_id: user.ids).part_time
+    part_time = PaidLeave.pluck(:part_time)
     approvals = Approval.all
     classification = PaidLeave.pluck(:classification)
 
-    service = Service.new(user, approvals)
+    service = Service.new(user, approvals, part_time, classification)
     @achievements = service.achievements
-    @plan = service.plan
+    @discrimination = service.discrimination
     @total_days = service.total_days
     @items = service.items
     @carry_over = service.carry_over
@@ -49,6 +51,7 @@ class PaidLeavesController < ApplicationController
   # POST /paid_leaves or /paid_leaves.json
   def create
     @paid_leafe = PaidLeave.new(paid_leafe_params)
+    @paid_leafe.user = current_user
     if @paid_leafe.save
       redirect_to @paid_leafe, notice: "Paid leave was successfully created."
     else
@@ -67,6 +70,7 @@ class PaidLeavesController < ApplicationController
 
   # DELETE /paid_leaves/1 or /paid_leaves/1.json
   def destroy
+    @paid_leave.grants.destroy_all if paid_leave.grants.any?
     @paid_leafe.destroy!
 
     respond_to do |format|

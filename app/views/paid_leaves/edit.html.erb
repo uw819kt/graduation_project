@@ -1,4 +1,4 @@
-<h1>Editing paid leave</h1>
+<h1><%= t('addition.Editing Paid Leave') %></h1>
 
 <%= form_with(model: @paid_leafe) do |form| %>
   <% if @paid_leafe.errors.any? %>
@@ -42,8 +42,3 @@
 
 
 <br>
-
-<div>
-  <%= link_to "Show this paid leave", @paid_leafe %> |
-  <%= link_to "Back to paid leaves", paid_leaves_path %>
-</div>

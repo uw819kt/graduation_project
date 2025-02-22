@@ -1,71 +1,75 @@
 
 
-<h1>Alcohol logs</h1>
-
+<h1><%= t('addition.Alcohol logs') %></h1>
 <p>興和電気株式会社</p>
 <!-- 検索フォーム -->
-<%= Date.today.strftime("%Y年%m月%d日") %>
+<%= I18n.l(Date.today, format: :middle) %>
 
 <table>
   <tbody>
     <tr>
-      <td>Car Number</td>
-      <td colspan="7">Before Driving</td>
-      <td colspan="7">After Driving</td>
-      <td>Confirmation Field</td>
+      <td colspan="2"><%= t('addition.name&car number') %></td>
+      <td colspan="7"><%= t('addition.before driving') %></td>
     </tr>
 
     <tr>
-      <td>Car Number</td>
-      <td>check_time</td>
-      <td>confirmation</td>
-      <td>detector_used</td>
-      <td>result</td>
-      <td>condition</td>
-      <td>log_remarks</td>
-      <td>confirmer</td>
-      <td>check_time</td>
-      <td>confirmation</td>
-      <td>detector_used</td>
-      <td>result</td>
-      <td>condition</td>
-      <td>log_remarks</td>
-      <td>confirmer</td>
-      <td>admin</td>
+      <td><%= t('activerecord.attributes.user.name') %></td>
+      <td><%= t('activerecord.attributes.alcohol_log.check_time') %></td>
+      <td><%= t('activerecord.attributes.alcohol_log.confirmation') %></td>
+      <td><%= t('activerecord.attributes.alcohol_log.detector_used') %></td>
+      <td><%= t('activerecord.attributes.alcohol_log.result') %></td>
+      <td><%= t('activerecord.attributes.alcohol_log.condition') %></td>
+      <td><%= t('activerecord.attributes.alcohol_log.log_remarks') %></td>
+      <td><%= t('addition.confirmer') %></td>
     </tr>
-    <tr>
-      <td>
-        <% @alcohol_log.each do |alcohol_log| %>
-          <% if alcohol_log.car.private_car.nil? || alcohol_log.car.private_car.empty? %>
-            <%= alcohol_log.car.company_car %>
-          <% else %>
-            <%= alcohol_log.car.private_car %>
-          <% end %>
-        <% end %>
-      </td>
 
-    <% @before_driving_logs.each do |before_alcohol_log| %>
-      <td><%= before_alcohol_log.check_time.in_time_zone('Asia/Tokyo').strftime('%Y-%m-%d %H:%M:%S') %></td>
-      <td><%= before_alcohol_log.confirmation %></td>
-      <td><%= before_alcohol_log.detector_used %></td>
-      <td><%= before_alcohol_log.result %></td>
-      <td><%= before_alcohol_log.condition %></td>
-      <td><%= before_alcohol_log.log_remarks %></td>
-      <td></td> <!-- 空欄 -->
+    <% @before_driving_logs.each do |log| %>
+      <tr>
+        <td><%= log.user.name %></td>
+        <td><%= log.user.car.private_car&.presence || log.user.car.company_car %></td>
+        <td><%= I18n.l(log.check_time, format: :long) %></td>
+        <td><%= log.confirmation_i18n %></td>
+        <td><%= log.detector_used ? '有' : '無' %></td>
+        <td><%= log.result %></td>
+        <td><%= log.condition_i18n %></td>
+        <td><%= log.log_remarks %></td>
+        <td></td> <!-- 空欄 -->
+      </tr>
     <% end %>
-    <% @after_driving_logs.each do |after_alcohol_log| %>
-      <td><%= after_alcohol_log.check_time.in_time_zone('Asia/Tokyo').strftime('%Y-%m-%d %H:%M:%S') %></td>
-      <td><%= after_alcohol_log.confirmation %></td>
-      <td><%= after_alcohol_log.detector_used %></td>
-      <td><%= after_alcohol_log.result %></td>
-      <td><%= after_alcohol_log.condition %></td>
-      <td><%= after_alcohol_log.log_remarks %></td>
-      <td></td> <!-- 空欄 -->
-      <td></td> <!-- 空欄 -->
-    <% end %>
-    </tr>
-  <tbody>
+  </tbody>
+</table>
+
 <table>
+  <tbody>
+    <tr>
+      <td colspan="7"><%= t('addition.after driving') %></td>
+      <td><%= t('addition.confirmation field') %></td>
+    </tr>
 
+    <tr>
+      <td><%= t('activerecord.attributes.alcohol_log.check_time') %></td>
+      <td><%= t('activerecord.attributes.alcohol_log.confirmation') %></td>
+      <td><%= t('activerecord.attributes.alcohol_log.detector_used') %></td>
+      <td><%= t('activerecord.attributes.alcohol_log.result') %></td>
+      <td><%= t('activerecord.attributes.alcohol_log.condition') %></td>
+      <td><%= t('activerecord.attributes.alcohol_log.log_remarks') %></td>
+      <td><%= t('addition.confirmer') %></td>
+      <td><%= t('addition.admin') %></td>
+    </tr>
+          
+    <% @after_driving_logs.each do |log| %>
+      <tr>
+        <td><%= I18n.l(log.check_time, format: :long) %></td>
+        <td><%= log.confirmation_i18n %></td>
+        <td><%= log.detector_used ? '有' : '無' %></td>
+        <td><%= log.result %></td>
+        <td><%= log.condition_i18n %></td>
+        <td><%= log.log_remarks %></td>
+        <td></td> <!-- 空欄 -->
+        <td></td> <!-- 空欄 -->
 
-<%= link_to "New alcohol log", new_alcohol_log_path %>
+        <td><%= link_to t('addition.Show'), alcohol_log_path(log.user.id) %></td>
+      </tr>
+    <% end %>     
+  </tbody>
+</table>

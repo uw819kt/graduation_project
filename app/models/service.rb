@@ -1,14 +1,17 @@
 class Service
 # 計算用クラス
-  attr_accessor :user, :approvals, :paid_leafe, :adjustment_value, :adjustment_plan_value, :adjustment_carry_value
+  attr_accessor :user, :approvals, :paid_leafe, :adjustment_value,
+    :adjustment_plan_value, :adjustment_carry_value, :part_time, :classification
 
-  def initialize(user, approvals, adjustment_value = 0, adjustment_plan_value = 0, adjustment_carry_value = 0)
+  def initialize(user, approvals, adjustment_value = 0, adjustment_plan_value = 0, adjustment_carry_value = 0, part_time, classification)
     @user = user
     @paid_leafe = paid_leafe
     @approvals = approvals
     @adjustment_value = adjustment_value
     @adjustment_plan_value = adjustment_plan_value
     @adjustment_carry_value = adjustment_carry_value
+    @part_time = part_time
+    @classification = classification
   end
 
   def carry_over # 前年度繰越分
@@ -24,10 +27,10 @@ class Service
 
   def total_days # 有給保有日数
     carry_over = self.carry_over
-    plan = self.plan
+    discrimination = self.discrimination
     achievements = self.achievements
     
-    @total_days = (carry_over + plan.to_i) - achievements.to_i
+    @total_days = (carry_over + discrimination.to_i) - achievements.to_i
   end
 
   def adjusted_total_days # 有給保有日数(調整)
@@ -41,7 +44,7 @@ class Service
   end
 
   def items # 有給休暇取得数（月別）
-    @items = approvals.group("EXTRACT(MONTH FROM acquisition_date)").count
+    @items = approvals.where(paid_applicable: true).group("EXTRACT(MONTH FROM acquisition_date)").count
   end
 
   def years_of_service # 勤続年数
@@ -53,97 +56,114 @@ class Service
   end
 
   def adjusted_plan # 有給休暇付与予定日数(調整)
-    plan = self.plan
+    discrimination = self.discrimination
     @adjusted_plan = total_days + @adjustment_plan_value
   end
 
-  def plan # 有給休暇付与予定日数
-    years_of_service = self.years_of_service.to_f
-    part_time_values = PaidLeave.where(user_id: @user).pluck(:part_time)
+  def discrimination # 有給休暇付与日数表示
+    if @part_time == true
+      part_time_plan
+      # パート社員の場合
+    else
+      full_time_plan
+      # 正社員の場合
+    end
+  end
 
-    if part_time_values.include?(false) # 正社員の場合
+
+  private
+
+  def part_time_plan # 有給休暇付与予定日数
+    years_of_service = self.years_of_service.to_f
+    if @classification == "4days_w" # 週4日＆30時間以下の場合
       if 0.5 <= years_of_service && years_of_service < 1.5
-        @plan = "10"
+        @part_time_plan = 7
       elsif 1.5 <= years_of_service && years_of_service < 2.5
-        @plan = "11"
+        @part_time_plan = 8
       elsif 2.5 <= years_of_service && years_of_service < 3.5
-        @plan = "12"
+        @part_time_plan = 9
       elsif 3.5 <= years_of_service && years_of_service < 4.5
-        @plan = "14"
+        @part_time_plan = 10
       elsif 4.5 <= years_of_service && years_of_service < 5.5
-        @plan = "16"
+        @part_time_plan = 12
       elsif 5.5 <= years_of_service && years_of_service < 6.5
-        @plan = "18"  
-      else years_of_service >= 6.5
-        @plan = "20"     
-      end
-    elsif part_time_values.include?(true) && classification == 0 # 週4日＆30時間以下の場合
-      if 0.5 <= years_of_service && years_of_service < 1.5
-        @plan = "7"
-      elsif 1.5 <= years_of_service && years_of_service < 2.5
-        @plan = "8"
-      elsif 2.5 <= years_of_service && years_of_service < 3.5
-        @plan = "9"
-      elsif 3.5 <= years_of_service && years_of_service < 4.5
-        @plan = "10"
-      elsif 4.5 <= years_of_service && years_of_service < 5.5
-        @plan = "12"
-      elsif 5.5 <= years_of_service && years_of_service < 6.5
-        @plan = "13"  
+        @part_time_plan = 13  
       elsif years_of_service >= 6.5
-        @plan = "15"
+        @part_time_plan = 15
       end       
-    elsif part_time_values.include?(true) && classification == 1  # 週3日＆30時間以下の場合  
+    elsif classification == "3days_w"  # 週3日＆30時間以下の場合  
       if 0.5 <= years_of_service && years_of_service < 1.5
-        @plan = "5"
+        @part_time_plan = 5
       elsif 1.5 <= years_of_service && years_of_service < 2.5
-        @plan = "6"
+        @part_time_plan = 6
       elsif 2.5 <= years_of_service && years_of_service < 3.5
-        @plan = "6"
+        @part_time_plan = 6
       elsif 3.5 <= years_of_service && years_of_service < 4.5
-        @plan = "8"
+        @part_time_plan = 8
       elsif 4.5 <= years_of_service && years_of_service < 5.5
-        @plan = "9"
+        @part_time_plan = 9
       elsif 5.5 <= years_of_service && years_of_service < 6.5
-        @plan = "10"  
+        @part_time_plan = 10  
       elsif years_of_service >= 6.5
-        @plan = "11"
+        @part_time_plan = 11
       end 
-    elsif part_time_values.include?(true) && classification == 2  # 週2日＆30時間以下の場合  
+    elsif classification == "2days_w"  # 週2日＆30時間以下の場合  
       if 0.5 <= years_of_service && years_of_service < 1.5
-        @plan = "3"
+        @part_time_plan = 3
       elsif 1.5 <= years_of_service && years_of_service < 2.5
-        @plan = "4"
+        @part_time_plan = 4
       elsif 2.5 <= years_of_service && years_of_service < 3.5
-        @plan = "4"
+        @part_time_plan = 4
       elsif 3.5 <= years_of_service && years_of_service < 4.5
-        @plan = "5"
+        @part_time_plan = 5
       elsif 4.5 <= years_of_service && years_of_service < 5.5
-        @plan = "6"
+        @part_time_plan = 6
       elsif 5.5 <= years_of_service && years_of_service < 6.5
-        @plan = "6"  
+        @part_time_plan = 6  
       elsif years_of_service >= 6.5
-        @plan = "7"
+        @part_time_plan = 7
       end
-    elsif part_time_values.include?(true) && classification == 3  # 週1日＆30時間以下の場合  
+    elsif classification == "1days_w"  # 週1日＆30時間以下の場合  
       if 0.5 <= years_of_service && years_of_service < 1.5
-        @plan = "1"
+        @part_time_plan = 1
       elsif 1.5 <= years_of_service && years_of_service < 2.5
-        @plan = "2"
+        @part_time_plan = 2
       elsif 2.5 <= years_of_service && years_of_service < 3.5
-        @plan = "2"
+        @part_time_plan = 2
       elsif 3.5 <= years_of_service && years_of_service < 4.5
-        @plan = "2"
+        @part_time_plan = 2
       elsif 4.5 <= years_of_service && years_of_service < 5.5
-        @plan = "3"
+        @part_time_plan = 3
       elsif 5.5 <= years_of_service && years_of_service < 6.5
-        @plan = "3"  
+        @part_time_plan = 3  
       elsif years_of_service >= 6.5
-        @plan = "3"
+        @part_time_plan = 3
       end
     else
-      @plan = "0"     
+      @part_time_plan = 0     
     end
-    @plan
   end  
-end  
+
+  def full_time_plan
+    years_of_service = self.years_of_service.to_f
+
+    if 0.5 <= years_of_service && years_of_service < 1.5
+      @full_time_plan = 10
+    elsif 1.5 <= years_of_service && years_of_service < 2.5
+      @full_time_plan = 11
+    elsif 2.5 <= years_of_service && years_of_service < 3.5
+      @full_time_plan = 12
+    elsif 3.5 <= years_of_service && years_of_service < 4.5
+      @full_time_plan = 14
+    elsif 4.5 <= years_of_service && years_of_service < 5.5
+      @full_time_plan = 16
+    elsif 5.5 <= years_of_service && years_of_service < 6.5
+      @full_time_plan = 18  
+    elsif years_of_service >= 6.5
+      @full_time_plan = 20
+    else
+      @full_time_plan = 0     
+    end
+    @full_time_plan
+  end
+end

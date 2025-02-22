@@ -1,0 +1,38 @@
+<h1><%= t('addition.Users') %></h1>
+
+<table>
+  <tbody>
+    <tr>
+      <td><%= t('activerecord.attributes.user.name') %></td>
+      <td><%= t('activerecord.attributes.user.department') %></td>
+      <td><%= t('activerecord.attributes.user.email') %></td>
+      <td><%= t('activerecord.attributes.alcohol_log.car_id') %></td>
+      <td><%= t('activerecord.attributes.paid_leave.joining_date') %></td>
+    </tr>
+
+    <tr>
+    <% @users.each do |user| %>
+      <td><%= user.name %></td>
+      <td><%= user.department_i18n %></td>
+      <td><%= user.email %></td>
+      <td>
+        <% if user.car.private_car.nil? || user.car.private_car.empty? %>
+          <%= user.car.company_car %>
+        <% else %>
+          <%= user.car.private_car %>
+        <% end %>
+      </td>
+      <td>
+        <%= I18n.l(user.paid_leave.joining_date, format: :middle) %>
+      </td>
+    
+      <td>
+        <div>
+          <%= link_to t('addition.Edit'), edit_admin_user_path(user) %>
+          <%= button_to t('addition.Destroy'), admin_user_path(user), method: :delete, data: { turbo_method: :get, turbo_confirm: 'Are you sure?' } %>
+        </div>
+      </td> 
+    </tr>
+    <% end %>
+  <tbody>
+</table>

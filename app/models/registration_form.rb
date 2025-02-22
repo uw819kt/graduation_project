@@ -10,8 +10,8 @@ class RegistrationForm
   validate :grant_validate
 
   def save
+    binding.irb
     return false if invalid?
-
     ActiveRecord::Base.transaction do
       save!
     end
@@ -21,23 +21,40 @@ class RegistrationForm
   end
 
   def save!
-    user.save!
+    unless @user.persisted?
+      raise ActiveRecord::Rollback
+    end
+ 
+    unless @paid_leave.save!
+      raise ActiveRecord::Rollback
+    end
+    
+
+    unless @car.save!
+      raise ActiveRecord::Rollback
+    end
+     
+    unless @grant.save!
+      raise ActiveRecord::Rollback
+    end
   end
 
   def user
-    @user ||= User.new(user_attributes)
+    @user ||= user_attributes.is_a?(User) ? user_attributes : User.new(user_attributes)
   end
 
   def paid_leave
-    @paid_leave ||= user.build_paid_leave(paid_leave_attributes)
+    @paid_leave ||= paid_leave_attributes.is_a?(PaidLeave) ? paid_leave_attributes : user.build_paid_leave(paid_leave_attributes)
   end
 
   def car
-    @car ||= user.build_car(car_attributes)
+    @car ||= car_attributes.is_a?(Car) ? car_attributes : user.build_car(car_attributes)
   end
 
   def grant
-    @grant ||= user.build_grant(grant_attributes)
+    @user = User.new(user_attributes)
+    @user.build_paid_leave
+    @grant ||= grant_attributes.is_a?(Grant) ? grant_attributes : @user.paid_leave.build_grant(grant_attributes)
   end
 
 

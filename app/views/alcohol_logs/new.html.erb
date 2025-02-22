@@ -1,4 +1,4 @@
-<%= form_with(model: @alcohol_log) do |form| %>
+<%= form_with(model: @alcohol_log, remote: false) do |form| %>
   <% if @alcohol_log.errors.any? %>
     <div style="color: red">
       <h2><%= pluralize(@alcohol_log.errors.count, "error") %> prohibited this paid_leafe from being saved:</h2>
@@ -12,27 +12,22 @@
   <% end %>
 <% end %>
 
-<h1>New alcohol log</h1>
+<h1><%= t('addition.New alcohol log') %></h1>
 
   <%= form_with model: @alcohol_log do |form| %>
     <div>
       <%= form.label :driving_status %>
-      <%= form.select :driving_status, @alcohol_log.class.driving_statuses.keys, { include_blank: true } %>
+      <%= form.select :driving_status, @alcohol_log.class.driving_statuses.keys.map {|k| [I18n.t("enums.alcohol_log.driving_status.#{k}"), k]}, { include_blank: true } %>
     </div>
 
     <div>
-      <%= form.label :company_car %>
-      <%= form.text_field :company_car %>
-    </div>
-
-    <div>
-      <%= form.label :private_car %>
-      <%= form.text_field :private_car %>
+      <%= form.label :car_id %>
+      <%= form.select :car_id, options_from_collection_for_select(Car.all, :id, :car_number), prompt: '車両を選択' %>
     </div>
 
     <div>
       <%= form.label :confirmation %>
-      <%= form.select :confirmation, @alcohol_log.class.confirmations.keys %>
+      <%= form.select :confirmation, @alcohol_log.class.confirmations.keys.map {|k| [I18n.t("enums.alcohol_log.confirmation.#{k}"), k]}, {} %>
     </div>
 
     <div>
@@ -47,7 +42,7 @@
 
     <div>
       <%= form.label :condition %>
-      <%= form.select :condition, @alcohol_log.class.conditions.keys %>
+      <%= form.select :condition, @alcohol_log.class.conditions.keys.map {|k| [I18n.t("enums.alcohol_log.condition.#{k}"), k]}, {} %>
     </div>
 
     <div>
@@ -60,5 +55,5 @@
 <br>
 
 <div>
-  <%= link_to "Back to alcohol logs", alcohol_logs_path %>
+  <%= link_to t('addition.Back'), alcohol_logs_path %>
 </div>

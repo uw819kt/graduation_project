@@ -1,15 +1,16 @@
 class PaidLeave < ApplicationRecord
   belongs_to :user
-  has_many :requests
+  has_one :grant, dependent: :destroy
+  has_many :requests, dependent: :destroy 
   accepts_nested_attributes_for :requests
-  has_many :approvals
+  has_many :approvals, dependent: :destroy 
   accepts_nested_attributes_for :approvals
 
   validates :joining_date, presence: true
   validates :base_date, presence: true
   validates :part_time, inclusion: { in: [true, false] }
-  validates :classification, presence: true
-  validates :user_id, presence: true
+  validates :user_id, presence: true, on: :update
+  validates :classification, presence: { allow_nil: true, allow_blank: true }, on: [:create, :update]                      
 
 
   enum :classification, {
@@ -20,5 +21,4 @@ class PaidLeave < ApplicationRecord
     "others": 4
     }
 
-  validates :classification, presence: { allow_nil: true, allow_blank: true }, on: [:create, :update]                      
 end

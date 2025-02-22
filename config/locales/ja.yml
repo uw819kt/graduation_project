@@ -1,0 +1,237 @@
+ja:
+  activerecord:
+    errors:
+      messages:
+        prohibited: "%{record}は保存できませんでした"
+        record_invalid: 'バリデーションに失敗しました: %{errors}'
+        restrict_dependent_destroy:
+          has_one: "%{record}が存在しているので削除できません"
+          has_many: "%{record}が存在しているので削除できません"
+  date:
+    abbr_day_names:
+    - 日
+    - 月
+    - 火
+    - 水
+    - 木
+    - 金
+    - 土
+    abbr_month_names:
+    - 
+    - 1月
+    - 2月
+    - 3月
+    - 4月
+    - 5月
+    - 6月
+    - 7月
+    - 8月
+    - 9月
+    - 10月
+    - 11月
+    - 12月
+    day_names:
+    - 日曜日
+    - 月曜日
+    - 火曜日
+    - 水曜日
+    - 木曜日
+    - 金曜日
+    - 土曜日
+    formats:
+      default: "%Y/%m/%d"
+      long: "%Y年%m月%d日 %H:%M"
+      middle: "%Y年%m月%d日"
+      short: "%m/%d"
+    month_names:
+    - 
+    - 1月
+    - 2月
+    - 3月
+    - 4月
+    - 5月
+    - 6月
+    - 7月
+    - 8月
+    - 9月
+    - 10月
+    - 11月
+    - 12月
+    order:
+    - :year
+    - :month
+    - :day
+  datetime:
+    distance_in_words:
+      about_x_hours: 約%{count}時間
+      about_x_months: 約%{count}ヶ月
+      about_x_years: 約%{count}年
+      almost_x_years: "%{count}年弱"
+      half_a_minute: 30秒前後
+      less_than_x_seconds: "%{count}秒未満"
+      less_than_x_minutes: "%{count}分未満"
+      over_x_years: "%{count}年以上"
+      x_seconds: "%{count}秒"
+      x_minutes: "%{count}分"
+      x_days: "%{count}日"
+      x_months: "%{count}ヶ月"
+      x_years: "%{count}年"
+    prompts:
+      second: 秒
+      minute: 分
+      hour: 時
+      day: 日
+      month: 月
+      year: 年
+  errors:
+    format: "%{attribute}%{message}"
+    messages:
+      accepted: を受諾してください
+      blank: を入力してください
+      confirmation: と%{attribute}の入力が一致しません
+      empty: を入力してください
+      equal_to: は%{count}にしてください
+      even: は偶数にしてください
+      exclusion: は予約されています
+      greater_than: は%{count}より大きい値にしてください
+      greater_than_or_equal_to: は%{count}以上の値にしてください
+      in: は%{count}の範囲に含めてください
+      inclusion: は一覧にありません
+      invalid: は不正な値です
+      less_than: は%{count}より小さい値にしてください
+      less_than_or_equal_to: は%{count}以下の値にしてください
+      model_invalid: 'バリデーションに失敗しました: %{errors}'
+      not_a_number: は数値で入力してください
+      not_an_integer: は整数で入力してください
+      odd: は奇数にしてください
+      other_than: は%{count}以外の値にしてください
+      password_too_long: が長すぎます
+      present: は入力しないでください
+      required: を入力してください
+      taken: はすでに存在します
+      too_long: は%{count}文字以内で入力してください
+      too_short: は%{count}文字以上で入力してください
+      wrong_length: は%{count}文字で入力してください
+    template:
+      body: 次の項目を確認してください
+      header: "%{model}に%{count}個のエラーが発生しました"
+  helpers:
+    select:
+      prompt: 選択してください
+    submit:
+      create: 登録する
+      submit: 保存する
+      update: 更新する
+  number:
+    currency:
+      format:
+        delimiter: ","
+        format: "%n%u"
+        precision: 0
+        separator: "."
+        significant: false
+        strip_insignificant_zeros: false
+        unit: 円
+    format:
+      delimiter: ","
+      precision: 3
+      round_mode: default
+      separator: "."
+      significant: false
+      strip_insignificant_zeros: false
+    human:
+      decimal_units:
+        format: "%n %u"
+        units:
+          billion: 十億
+          million: 百万
+          quadrillion: 千兆
+          thousand: 千
+          trillion: 兆
+          unit: ''
+      format:
+        delimiter: ''
+        precision: 3
+        significant: true
+        strip_insignificant_zeros: true
+      storage_units:
+        format: "%n%u"
+        units:
+          byte: バイト
+          eb: EB
+          gb: GB
+          kb: KB
+          mb: MB
+          pb: PB
+          tb: TB
+    percentage:
+      format:
+        delimiter: ''
+        format: "%n%"
+    precision:
+      format:
+        delimiter: ''
+  support:
+    array:
+      last_word_connector: "、"
+      two_words_connector: "、"
+      words_connector: "、"
+  time:
+    am: 午前
+    formats:
+      default: "%Y年%m月%d日(%a) %H時%M分%S秒 %z"
+      long: "%Y/%m/%d %H:%M"
+      short: "%m/%d %H:%M"
+    pm: 午後
+  addition:
+    nav:
+      admin user index: 社員情報一覧
+      admin user new: 社員新規登録
+      alcohole log index: 酒気帯びチェック表一覧
+      alcohole log new: 酒気帯びチェック表入力
+      alcohole log show: 酒気帯びチェック表入力状況
+      paid leave new: 有給休暇取得申請
+      paid leave index: 有給休暇取得状況一覧
+      log out: ログアウト
+    Paid Leaves: 有給休暇取得計画表（年間）
+    New paid leave: 有給休暇取得申請
+    Editing Paid Leave: 有給休暇取得申請（編集）
+    Paid leaves Show: 年度 年次有給休暇管理表
+    Alcohol logs: 酒気帯び確認記録表
+    alcohole log show: 酒気帯び確認記録表（詳細）
+    New alcohol log: 酒気帯びチェック表入力フォーム
+    Editing alcohol log: 酒気帯びチェック表入力フォーム（編集）
+    Users: 社員情報一覧
+    New user: 社員情報登録フォーム
+    Editing user: 社員情報登録フォーム（編集）
+    basic information: 基本情報
+    paid leave information: 有給休暇関連情報
+    Name: 氏名
+    Joining: 入社日
+    Basis: 基準日
+    Possession: 基準日時点の年休保有日数
+    Plan: 予定日数
+    Achievements: 取得数（実績）
+    Validity Period: 有効期間
+    Total Days: 合計日数
+    Carry Over: 前年度繰越分
+    Granted This Year: 今年度付与分
+    Date of notification: 届出年月日
+    Application Date: 取得日
+    Remaining Days: 残日数
+    Personal Stamp: 本人印
+    Approval Stamp: 承認印
+    Remarks: 備考
+    Applicable: 有給適用
+    car number: 車両番号等
+    before driving: 運転前
+    after driving: 運転後
+    name&car number: 運転者・車両
+    confirmer: 確認者
+    confirmation field: 確認欄
+    admin: 安全運転管理者
+    Show: 詳細
+    Edit: 編集
+    Back: 戻る
+    Destroy: 削除
+

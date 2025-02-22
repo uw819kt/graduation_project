@@ -15,7 +15,7 @@ gem 'sass-rails', '>= 6'
 gem 'importmap-rails'
 gem 'jsbundling-rails'
 # Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
-gem 'turbolinks', '~> 5'
+# gem 'turbolinks', '~> 5'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.7'
 # Use Redis adapter to run Action Cable in production
@@ -55,7 +55,6 @@ group :test do
   gem 'capybara', '>= 3.26'
   gem 'selenium-webdriver', '>= 4.0.0.rc1'
   # Easy installation and use of web drivers to run system tests with browsers
-  gem 'webdrivers'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
@@ -65,4 +64,8 @@ gem 'stringio', '~> 3.1.2'
 gem "sprockets-rails"
 gem "turbo-rails"
 gem "stimulus-rails"
-gem 'exnum'
+gem 'enum_help'
+gem 'devise'
+gem 'rexml'
+gem 'cssbundling-rails'
+gem 'foreman'

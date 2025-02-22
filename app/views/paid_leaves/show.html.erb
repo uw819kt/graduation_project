@@ -1,42 +1,43 @@
-<p style="color: green"><%= notice %></p>
 
-<h1><%= Date.today.year %>Paid leaves Show</h1>
 
-<p>department&nbsp;&nbsp;<%= @paid_leafe.user.department %></p>
-<p>name&nbsp;&nbsp;<%= @paid_leafe.user.name %></p>
+<h1><%= Date.today.year %><%= t('addition.Paid leaves Show') %></h1>
+
+<p><%= t('activerecord.attributes.user.department') %>&nbsp;&nbsp;<%= @paid_leafe.user.department_i18n %></p>
+<p><%= t('activerecord.attributes.user.name') %>&nbsp;&nbsp;<%= @paid_leafe.user.name %></p>
 
 <table>
   <tbody>
       <tr>
-        <td colspan="2">Basis</td>
-        <td colspan="2"><%= @paid_leafe.base_date.strftime("%Y年%m月%d日") %></td>
+        <td colspan="2"><%= t('activerecord.attributes.paidLeave.base_date') %></td>
+        <td colspan="2"><%= I18n.l(@paid_leafe.base_date, format: :middle) %></td>
       </tr>
       <tr>
-        <td colspan="2">Validity Period</td>
-        <td colspan="2"><%= "#{@paid_leafe.base_date.strftime("%Y年%m月%d日")}～#{((@paid_leafe.base_date.next_year - 1).strftime("%Y年%m月%d日"))}" %></td>
+        <td colspan="2"><%= t('addition.Validity Period') %></td>
+        <td colspan="2"><%= "#{I18n.l(@paid_leafe.base_date, format: :middle)}～#{I18n.l(@paid_leafe.base_date.next_year - 1, format: :middle)}" %></td>
       </tr>
       <tr>
-        <td>Total Days</td>
+        <td><%= t('addition.Total Days') %></td>
         <td><%= @total_days %></td>
 
-        <td>Carry Over</td>
+        <td><%= t('addition.Carry Over') %></td>
         <td><%= @carry_over %></td>
 
-        <td>Granted This Year</td>
-        <td><%= @plan %></td>
+        <td><%= t('addition.Granted This Year') %></td>
+        <td><%= @discrimination %></td>
       </tr>
   <tbody>
 </table>
 <table>
   <thead>
     <tr>
-      <th>Number</th>
-      <th>Application Date</th>
-      <th>Remaining Days</th>
-      <th>Personal Stamp</th>
-      <th>Approval Stamp</th>
-      <th>Remarks</th>
-      <th>Applicable</th>
+      <th>No</th>
+      <th><%= t('addition.Date of notification') %></th>
+      <th><%= t('addition.Application Date') %></th>
+      <th><%= t('addition.Remaining Days') %></th>
+      <th><%= t('addition.Personal Stamp') %></th>
+      <th><%= t('addition.Approval Stamp') %></th>
+      <th><%= t('addition.Remarks') %></th>
+      <th><%= t('addition.Applicable') %></th>
     </tr>
   </thead>
     
@@ -44,15 +45,18 @@
     <% @paid_leafe.approvals.each_with_index do |approval, index| %>
       <tr>
         <td><%= index + 1 %></td>
-        <td><%= approval.request_date.strftime("%Y年%m月%d日") %></td>
-        <td><%= approval.acquisition_date.strftime("%Y年%m月%d日") %></td>
+        <td><%= I18n.l(approval.request_date, format: :middle) %></td>
+        <td><%= I18n.l(approval.acquisition_date, format: :middle) %></td>
+        <td><%= @total_days %></td>
         <td></td> <!-- 空のセル -->
         <td></td> <!-- 空のセル -->
         <td><%= approval.paid_remarks %></td>
-        <td><%= approval.paid_applicable %></td>
+        <td><%= approval.paid_applicable ? '適用' : '未適用' %></td>
 
         <div>
-          <td><%= link_to "Edit this paid leave", edit_paid_leafe_path(@paid_leafe.id) %></td>
+          <% if current_user.admin? %>
+            <td><%= link_to t('addition.Edit'), edit_paid_leafe_path(@paid_leafe.id) %></td>
+          <% end %>
         </div>
       </tr>      
     <% end %>
@@ -60,5 +64,5 @@
 </table>
   
 <div>
-  <%= link_to "Back to paid leaves", paid_leaves_path %>
+  <%= link_to t('addition.Back'), paid_leaves_path %>
 </div>

@@ -11,7 +11,7 @@
     </div>
   <% end %>
 
-  <h1>New paid leave</h1>
+  <h1><%= t('addition.New paid leave') %></h1>
   
   <%= form.fields_for :approvals do |approval_form| %>
     <div>
@@ -38,5 +38,5 @@
 <br>
 
 <div>
-  <%= link_to "Back to paid leaves", paid_leaves_path %>
+  <%= link_to t('addition.Back'), paid_leaves_path %>
 </div>

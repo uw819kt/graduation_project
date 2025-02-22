@@ -1,19 +1,18 @@
-<p style="color: green"><%= notice %></p>
 
-<h1>Paid leaves</h1>
+<h1><%= t('addition.Paid Leaves') %></h1>
 
-<%= Date.today.strftime("%Y年%m月%d日") %>
+<%= I18n.l(Date.today, format: :middle) %>
 
 <table>
   <thead>
     <tr>
-      <th>Number</th>
-      <th>Name</th>
-      <th>Joining</th>
-      <th>Basis</th>
-      <th>Possession</th>
-      <th>Plan</th>
-      <th>Achievements</th>
+      <th>No</th>
+      <th><%= t('addition.Name') %></th>
+      <th><%= t('addition.Joining') %></th>
+      <th><%= t('addition.Basis') %></th>
+      <th><%= t('addition.Possession') %></th>
+      <th><%= t('addition.Plan') %></th>
+      <th><%= t('addition.Achievements') %></th>
       <% (4..12).each do |month| %>
         <th><%= month %>月</th>
       <% end %>
@@ -24,29 +23,29 @@
   </thead>
 
 <tbody>
-  <% @paid_leafe.each do |paid_leafe|%>
+  <% @user_service.each_with_index do |service, index|%>
     <tr>
-      <td><%= paid_leafe.id %></td>
-      <td><%= paid_leafe.user.name %></td>
-      <td><%= paid_leafe.joining_date.strftime("%Y年%m月%d日") %></td>
-      <td><%= paid_leafe.base_date.strftime("%Y年%m月%d日") %></td>
-      <td><%= @plan %></td>
-      <td><%= @plan %></td>
-      <td><%= @achievements %></td>
+      <td><%= index + 1 %></td>
+      <td><%= service[:user].name %></td>
+      <td><%= I18n.l(service[:user].paid_leave.joining_date, format: :middle) %></td>
+      <td><%= I18n.l(service[:user].paid_leave.base_date, format: :middle) %></td>
+      <td><%= service[:discrimination] %></td>
+      <td><%= service[:discrimination] %></td>
+      <td><%= service[:achievements] %></td>
 
       <% (4..12).each do |month| %>
         <td>
-          <%= @items[month.to_f] || 0 %>
+          <%= service[:items][month.to_f] || 0 %>
         </td>
       <% end %>
       
       <% (1..3).each do |month| %>
         <td>
-          <%= @items[month.to_f] || 0 %>
+          <%= service[:items][month.to_f] || 0 %>
         </td>
       <% end %>
     
-      <td><%= link_to "Show paid_leave", paid_leafe_path(paid_leafe.id) %></td>
+      <td><%= link_to t('addition.Show'), paid_leafe_path(service[:user].id) %></td>
     </tr>
   <% end %>
 </tbody>

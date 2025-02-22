@@ -3,20 +3,22 @@ class AlcoholLogsController < ApplicationController
 
   # GET /alcohol_logs or /alcohol_logs.json
   def index
-    @alcohol_log = AlcoholLog.all
-    @before_driving_logs = AlcoholLog.where(driving_status: 0)
-    @after_driving_logs = AlcoholLog.where(driving_status: 1)
+    @users = User.includes(:car, :alcohol_logs).all
+    @before_driving_logs = AlcoholLog.includes(:user).where(user_id: @users.ids, driving_status: 0).order(:check_time)
+    @after_driving_logs = AlcoholLog.includes(:user).where(user_id: @users.ids, driving_status: 1).order(:check_time)
+    # @alcohol_log = @user.alcohol_logs.where(check_time: Date.today).order(:check_time, :driving_status)
   end
 
   # GET /alcohol_logs/1 or /alcohol_logs/1.json
   def show
-    @before_driving_logs = AlcoholLog.where(driving_status: 0)
-    @after_driving_logs = AlcoholLog.where(driving_status: 1)
+    @before_driving_logs = AlcoholLog.where(user_id: current_user.id, driving_status: 0)
+    @after_driving_logs = AlcoholLog.where(user_id: current_user.id, driving_status: 1)
   end
 
   # GET /alcohol_logs/new
   def new
-    @alcohol_log = AlcoholLog.new
+    @alcohol_log = AlcoholLog.new(user_id: current_user.id)
+    @car = Car.all
   end
 
   # GET /alcohol_logs/1/edit
@@ -26,6 +28,7 @@ class AlcoholLogsController < ApplicationController
   # POST /alcohol_logs or /alcohol_logs.json
   def create
     @alcohol_log = AlcoholLog.new(alcohol_log_params)
+    @alcohol_log.user = current_user
     @alcohol_log.check_time = Time.zone.now
 
     respond_to do |format|

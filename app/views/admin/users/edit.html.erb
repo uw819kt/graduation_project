@@ -1,8 +1,21 @@
-<%= form_with(model:  @registration_form, url: users_path, remote: false) do |form| %>  <h1>Editing user</h1>
+<%= form_with model: [:admin, @user], remote: false do |form| %>  
+  <% if @registration_form.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(@registration_form.errors.count, "error") %> prohibited this paid_leafe from being saved:</h2>
 
-  <h2>basic information</h2>
+      <ul>
+        <% @registration_form.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <h1><%= t('addition.Editing user') %></h1>
 
-  <%= fields_for form.object.user do |form| %>
+
+  <h2><%= t('addition.basic information') %></h2>
+
+  <%= fields_for @user do |form| %>
     <div>
       <%= form.label :name %>
       <%= form.text_field :name %>
@@ -19,8 +32,13 @@
     </div>
 
     <div>
-      <%= form.label :password_digest %>
-      <%= form.text_field :password_digest %>
+      <%= form.label :password %>
+      <%= form.text_field :password %>
+    </div>
+
+    <div>
+      <%= form.label :password_confirmation %>
+      <%= form.password_field :password_confirmation %>
     </div>
   <% end %>
 
@@ -53,7 +71,7 @@
     </div>
   <% end %>
 
-<h2>paid leave information</h2>
+<h2><%= t('addition.paid leave information') %></h2>
 
 <%= fields_for form.object.paid_leave do |form| %>
   <div>
@@ -62,19 +80,19 @@
   </div>
 
   <div>
-    <p>Total Days&nbsp;&nbsp;<%= @total_days %></p>
+    <p><%= t('addition.Total Days') %>&nbsp;&nbsp;<%= @total_days %></p>
     <%= form.label :adjustment_value, "Adjustment (add/subtract)" %>
     <%= form.number_field :adjustment_value, value: 0 %>
   </div>
 
   <div>
-    <p>Possession&nbsp;&nbsp;<%= @plan %></p>
+    <p><%= t('addition.Possession') %>&nbsp;&nbsp;<%= @discrimination %></p>
     <%= form.label :adjustment_plan_value, "Adjustment (add/subtract)" %> 
     <%= form.number_field :adjustment_plan_value, value: 0 %> 
   </div>
 
   <div>
-    <p>Carry Over&nbsp;&nbsp;<%= @carry_over %></p>
+    <p><%= t('addition.Carry Over') %>&nbsp;&nbsp;<%= @carry_over %></p>
     <%= form.label :adjustment_carry_over, "Adjustment (add/subtract)" %> 
     <%= form.number_field :adjustment_carry_over, value: 0 %> 
   </div>
@@ -83,7 +101,12 @@
 <%= fields_for form.object.grant do |form| %>
   <div>
     <%= form.label :granted_piece %>
-    <%= form.text_field :granted_piece %>
+    <%= form.number_field :granted_piece, min: 0 %>
+  </div>
+
+  <div>
+    <%= form.label :granted_day %>
+    <%= form.date_field :granted_day %>
   </div>
 <% end %>
 
@@ -96,5 +119,5 @@
 <br>
 
 <div>
-  <%= link_to "Back to users", users_path %>
+  <%= link_to "Back to users", admin_users_path %>
 </div>
