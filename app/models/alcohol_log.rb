@@ -8,8 +8,6 @@ class AlcoholLog < ApplicationRecord
   validates :result, presence: true
   validates :condition, presence: true
   validates :log_remarks, length: { maximum: 30 }
-  validates :user_id, presence: true
-  validates :car_id, presence: true
   validates :driving_status, presence: true
 
   enum :driving_status, {before: 0, after: 1}

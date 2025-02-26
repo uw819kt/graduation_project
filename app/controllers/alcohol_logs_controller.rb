@@ -30,10 +30,11 @@ class AlcoholLogsController < ApplicationController
     @alcohol_log = AlcoholLog.new(alcohol_log_params)
     @alcohol_log.user = current_user
     @alcohol_log.check_time = Time.zone.now
+    @alcohol_log.build_car
 
     respond_to do |format|
       if @alcohol_log.save
-        format.html { redirect_to @alcohol_log, notice: "Alcohol log was successfully created." }
+        format.html { redirect_to @alcohol_log, notice: "酒気帯びチェックの入力が完了しました" }
         format.json { render :show, status: :created, location: @alcohol_log }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -46,7 +47,7 @@ class AlcoholLogsController < ApplicationController
   def update
     respond_to do |format|
       if @alcohol_log.update(alcohol_log_params)
-        format.html { redirect_to @alcohol_log, notice: "Alcohol log was successfully updated." }
+        format.html { redirect_to @alcohol_log, notice: "酒気帯びチェックの更新が完了しました" }
         format.json { render :show, status: :ok, location: @alcohol_log }
       else
         format.html { render :edit, status: :unprocessable_entity }

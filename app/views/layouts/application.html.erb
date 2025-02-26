@@ -14,28 +14,41 @@
 
   <body>
     <header>
-      <% if user_signed_in? %>
-        <% if current_user.admin? %>
-          <%= link_to t('addition.nav.admin user index'), admin_users_path %>
-          <%= link_to t('addition.nav.admin user new'), new_admin_user_path %>
-          <%= link_to t('addition.nav.alcohole log index'), alcohol_logs_path %>
-          <%= link_to t('addition.nav.alcohole log new'), new_alcohol_log_path %>
-          <%= link_to t('addition.nav.paid leave new'), new_paid_leafe_path %>
-          <%= link_to t('addition.nav.paid leave index'), paid_leaves_path %>
-          <%= button_to t('addition.nav.log out'), destroy_user_session_path, method: :delete, data: { turbo_method: :delete } %>
-        <% else %>
-          <%= link_to "alcohole log index", alcohol_logs_path %>
-          <%= link_to "alcohole log new", new_alcohol_log_path %>
-          <%= link_to "alcohole log show", alcohol_log_path(id: AlcoholLog.ids) %>
-          <%= link_to "paid leave new", new_paid_leafe_path %>
-          <%= link_to "paid leave index", paid_leaves_path %>
-          <%= button_to "log out", destroy_user_session_path, method: :delete, data: { turbo_method: :delete } %>
-        <% end %>
-      <% end %>
+      <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
+        <a class="navbar-brand">Track Ease</a>
+          <% if user_signed_in? %>
+            <% if current_user.admin? %>
+              <div class="d-flex justify-content-end column-gap-3">
+                <%= link_to t('addition.nav.admin user index'), admin_users_path, class: "text-decoration-none text-primary" %>
+                <%= link_to t('addition.nav.admin user new'), new_admin_user_path, class: "text-decoration-none text-primary" %>
+                <%= link_to t('addition.nav.alcohole log index'), alcohol_logs_path, class: "text-decoration-none text-primary" %>
+                <%= link_to t('addition.nav.alcohole log new'), new_alcohol_log_path, class: "text-decoration-none text-primary" %>
+                <%= link_to t('addition.nav.paid leave new'), new_approval_path, class: "text-decoration-none text-primary" %>
+                <%= link_to t('addition.nav.paid leave index'), paid_leaves_path, class: "text-decoration-none text-primary" %>
+                <%= button_to t('addition.nav.log out'), destroy_user_session_path, method: :delete, data: { turbo_method: :delete }, class: "btn btn-outline-info btn-sm" %>
+              </div>
+            <% else %>
+              <div class="d-flex justify-content-end column-gap-3">
+                <%= link_to t('addition.nav.alcohole log index'), alcohol_logs_path, class: "text-decoration-none text-primary" %>
+                <%= link_to t('addition.nav.alcohole log new'), new_alcohol_log_path, class: "text-decoration-none text-primary" %>
+                <%= link_to t('addition.nav.paid leave new'), new_approval_path, class: "text-decoration-none text-primary" %>
+                <%= link_to t('addition.nav.paid leave index'), paid_leaves_path, class: "text-decoration-none text-primary" %>
+                <%= button_to t('addition.nav.log out'), destroy_user_session_path, method: :delete, data: { turbo_method: :delete }, class: "btn btn-outline-info btn-sm" %>
+            </div>
+            <% end %>
+          <% end %>
+      </nav>
     </header>
 
-    <p class="notice"><%= notice %></p>
-    <p class="alert"><%= alert %></p>
+    <div class="container">
+      <% flash.each do |key, message| %>
+        <div class="alert alert-<%= key == 'notice' ? 'success' : 'danger' %>">
+          <%= message %>
+        </div>
+      <% end %>
+
+  <div class='container mt-5'>  
     <%= yield %>
+  </div>
   </body>
 </html>

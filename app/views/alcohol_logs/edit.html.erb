@@ -1,8 +1,6 @@
 <%= form_with(model: @alcohol_log, remote: false) do |form| %>
   <% if @alcohol_log.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(@alcohol_log.errors.count, "error") %> prohibited this paid_leafe from being saved:</h2>
-
+    <div class="alert alert-danger" role="alert">
       <ul>
         <% @alcohol_log.errors.each do |error| %>
           <li><%= error.full_message %></li>
@@ -17,17 +15,17 @@
 <%= form_with model: @alcohol_log do |form| %>
   <div>
     <%= form.label :driving_status %>
-    <%= form.select :driving_status, @alcohol_log.class.driving_statuses.keys.map {|k| [I18n.t("enums.alcohol_log.driving_status.#{k}"), k]}, { include_blank: true } %>
+    <%= form.select :driving_status, @alcohol_log.class.driving_statuses.keys.map {|k| [I18n.t("enums.alcohol_log.driving_status.#{k}"), k]}, { include_blank: true }, class: "form-control" %>
   </div>
 
   <div>
     <%= form.label :car_id %>
-    <%= form.select :car_id, options_from_collection_for_select(Car.all, :id, :car_number), prompt: '車両を選択' %>
+    <%= form.select :car_id, options_from_collection_for_select(Car.all, :id, :car_number), { prompt: '車両を選択' }, class: "form-control" %>
   </div>
 
   <div>
     <%= form.label :confirmation %>
-    <%= form.select :confirmation, @alcohol_log.class.confirmations.keys.map {|k| [I18n.t("enums.alcohol_log.confirmation.#{k}"), k]} %>
+    <%= form.select :confirmation, @alcohol_log.class.confirmations.keys.map {|k| [I18n.t("enums.alcohol_log.confirmation.#{k}"), k]}, {}, class: "form-control" %>
   </div>
 
   <div>
@@ -37,25 +35,25 @@
 
   <div>
     <%= form.label :result %>
-    <%= form.text_field :result %>
+    <%= form.text_field :result, class: "form-control" %>
   </div>
 
   <div>
     <%= form.label :condition %>
-    <%= form.select :condition, @alcohol_log.class.conditions.keys.map {|k| [I18n.t("enums.alcohol_log.condition.#{k}"), k]} %>
+    <%= form.select :condition, @alcohol_log.class.conditions.keys.map {|k| [I18n.t("enums.alcohol_log.condition.#{k}"), k]}, {}, class: "form-control" %>
   </div>
 
   <div>
     <%= form.label :log_remarks %>
-    <%= form.text_area :log_remarks %>
+    <%= form.text_area :log_remarks, class: "form-control", placeholder: "特記事項あれば記入" %>
   </div>
 
-    <%= form.submit %>
+    <%= form.submit class: "btn btn-outline-primary mt-4" %>
 <% end %>
 <br>
 
 <div>
-<%= link_to t('addition.Back'), alcohol_logs_path %>
+<%= link_to t('addition.Back'), alcohol_logs_path, class: "text-decoration-none d-flex justify-content-end" %>
 </div>
 
 

@@ -17,23 +17,49 @@
     # GET /users/new
     def new
       @user = User.new
-      @user.paid_leave
-      @registration_form = RegistrationForm.new
+      @user.build_car
+      @user.build_paid_leave
+      @user.build_grant
+    end
+
+    # POST /users or /users.json
+    def create
+      ActiveRecord::Base.transaction do
+        @user = User.new(user_params)
+        @paid_leave = @user.build_paid_leave(paid_leave_params)
+        @grant = @paid_leave.build_grant(grant_params)
+        @grant.user = @user
+        @user.build_car(car_params)
+        
+        if @user.save
+          flash[:notice] = "社員情報の登録が完了しました"
+          redirect_to admin_users_path
+        else
+        render :new, status: :unprocessable_entity
+        end
+      end
+      rescue ActiveRecord::Rollback => e
+      flash[:danger] = "Error: #{e.message}"            
     end
 
     # GET /users/1/edit
     def edit
-      @registration_form = RegistrationForm.new(user_attributes: @user, paid_leave_attributes: @user.paid_leave, car_attributes: @user.car)
+      @user = User.find(params[:id])
+      @paid_leave = @user.paid_leave
+      @car = @user.car
+      @grant = @user.grant
 
       user = User.all
       part_time = PaidLeave.find_by(user_id: user.ids).part_time
+      base_date = PaidLeave.find_by(user_id: user.ids).base_date
+      joining_date = PaidLeave.find_by(user_id: user.ids).joining_date
       approvals = Approval.all
       classification = PaidLeave.pluck(:classification)
       adjustment_value = params[:adjustment_value].to_i
       adjustment_plan_value = params[:adjustment_plan_value].to_i
       adjustment_carry_value = params[:adjustment_carry_value].to_i
 
-      service = Service.new(user, approvals, adjustment_value, classification)
+      service = Service.new(user, approvals, adjustment_value, classification, base_date, joining_date)
       @discrimination = service.discrimination
       @carry_over = service.carry_over
       @total_days = service.total_days
@@ -42,36 +68,15 @@
       @adjusted_carry_over = service.adjusted_carry_over
     end
 
-    # POST /users or /users.json
-    def create
-      @registration_form = RegistrationForm.new(user_attributes: user_params,
-        paid_leave_attributes: paid_leave_params,
-        car_attributes: car_params,
-        grant_attributes: grant_params
-        )
-      
-      if @registration_form.save
-        flash[:notice] = "User was successfully created."
-        redirect_to admin_users_path
-      else
-        render :new, status: :unprocessable_entity
-      end
-    end
-
     # PATCH/PUT /users/1 or /users/1.json
     def update
       @user = User.find(params[:id])
       @paid_leave = @user.paid_leave
       @car = @user.car
       @grant = @user.grant
-      binding.irb
-      @registration_form = RegistrationForm.new(user: @user.id, paid_leave: @paid_leave, car: @car, garant: @garant)
 
-      if @registration_form.update(user_attributes: user_params, 
-                                   paid_leave_attributes: paid_leave_params, 
-                                   car_attributes: car_params
-                                   )
-        redirect_to admin_users_path, notice: "User was successfully updated."
+      if @user.update(user_params) && @paid_leave.update(paid_leave_params) && @car.update(car_params) && @grant.update(grant_params)
+        redirect_to admin_users_path, notice: "社員情報の更新が完了しました"
       else
         render :edit, status: :unprocessable_entity
       end
@@ -80,10 +85,10 @@
     # DELETE /users/1 or /users/1.json
     def destroy
       if @user.destroy
-        flash[:notice] = 'user was successfully destroyed.'
+        flash[:notice] = '社員情報の削除が完了しました'
         redirect_to admin_users_path, status: :see_other
       else
-        flash[:alert] = @user.errors.full_messages.to_sentence
+        flash[:danger] = @user.errors.full_messages.to_sentence
         redirect_to admin_user_path(@user), status: :unprocessable_entity
       end
     end
@@ -96,19 +101,19 @@
 
     # Only allow a list of trusted parameters through.
     def user_params
-      params.require(:user).permit(:name, :email, :department, :password, :password_confirmation, :admin)
+      params.require(:user).permit(:name, :email, :department, :admin, :password, :password_confirmation)
     end
 
     def paid_leave_params
-      params.require(:paid_leave).permit(:joining_date, :part_time, :classification, :base_date, :user_id)
+      params.require(:paid_leave).permit(:joining_date, :base_date, :part_time, :classification)
     end
 
     def car_params
-      params.require(:car).permit(:company_car, :private_car, :user_id)
+      params.require(:car).permit(:company_car, :private_car)
     end
 
     def grant_params
-      params.require(:grant).permit(:granted_piece, :granted_day, :user_id, :paid_leave_id)
+      params.require(:grant).permit(:granted_piece, :granted_day)
     end
 
     def admin?

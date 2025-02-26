@@ -1,94 +1,62 @@
 class RegistrationForm
   include ActiveModel::Model
-  include ActiveModel::Attributes
+  # include ActiveModel::Attributes
 
-  attr_accessor :user_attributes, :paid_leave_attributes, :car_attributes, :grant_attributes
+  attr_accessor :name, :email, :department, :admin, :password, :password_confirmation, :joining_date, :part_time, 
+    :classification, :company_car, :private_car, :base_date, :granted_piece, :granted_day, :paid_leave_id, :granted_day
 
-  validate :user_validate
-  validate :paid_leave_validate
-  validate :car_validate
-  validate :grant_validate
+  validates :name, :department, :joining_date, :base_date, :granted_piece, :granted_day, presence: true
+  validates :admin, inclusion: { in: [true, false] }
+  validates :part_time, inclusion: { in: [true, false] }
+  validates :user_id, presence: true, on: :update
+  validates :classification, presence: { allow_nil: true, allow_blank: true }, on: [:create, :update]                      
+  validates :company_car, length: { maximum: 30 }
+  validates :private_car, length: { maximum: 30 }
+  validates :paid_leave_id, presence: true, on: :update
+
+  # delegate :persisted?, to: :user, :paid_leave, :car, :grant
+
+  def initialize(attributes = nil, user: User.new, paid_leave: PaidLeave.new, car: Car.new, grant: Grant.new)
+    @user = user
+    @paid_leave = paid_leave
+    @car = car
+    @grant = grant
+    attributes ||= default_attributes
+    super(attributes)
+  end
 
   def save
-    binding.irb
-    return false if invalid?
     ActiveRecord::Base.transaction do
-      save!
+      user = User.create(name:, email:, department:, password:, password_confirmation:)
+      paid_leave = PaidLeave.create(user_id: user.id, joining_date:, base_date:, part_time:, classification:)
+      Car.create(user_id: user.id, company_car:, private_car:)
+      Grant.create(user_id: user.id, paid_leave_id:paid_leave.id, granted_piece:, granted_day:)
     end
-    true
   rescue ActiveRecord::RecordInvalid
     false
-  end
-
-  def save!
-    unless @user.persisted?
-      raise ActiveRecord::Rollback
-    end
- 
-    unless @paid_leave.save!
-      raise ActiveRecord::Rollback
-    end
-    
-
-    unless @car.save!
-      raise ActiveRecord::Rollback
-    end
-     
-    unless @grant.save!
-      raise ActiveRecord::Rollback
-    end
-  end
-
-  def user
-    @user ||= user_attributes.is_a?(User) ? user_attributes : User.new(user_attributes)
-  end
-
-  def paid_leave
-    @paid_leave ||= paid_leave_attributes.is_a?(PaidLeave) ? paid_leave_attributes : user.build_paid_leave(paid_leave_attributes)
-  end
-
-  def car
-    @car ||= car_attributes.is_a?(Car) ? car_attributes : user.build_car(car_attributes)
-  end
-
-  def grant
-    @user = User.new(user_attributes)
-    @user.build_paid_leave
-    @grant ||= grant_attributes.is_a?(Grant) ? grant_attributes : @user.paid_leave.build_grant(grant_attributes)
   end
 
 
   private
 
-  def user_validate
-    return unless user.invalid?
+  attr_reader :user, :paid_leave, :car, :grant
 
-    user.errors.full_messages.each do |message|
-      errors.add(:base, message)
-    end
-  end
-
-  def paid_leave_validate
-    return unless paid_leave.invalid?
-
-    paid_leave.errors.full_messages.each do |message|
-      errors.add(:base, message)
-    end
-  end
-
-  def car_validate
-    return unless car.invalid?
-
-    car.errors.full_messages.each do |message|
-      errors.add(:base, message)
-    end
-  end
-
-  def grant_validate
-    return unless grant.invalid?
-
-    grant.errors.full_messages.each do |message|
-      errors.add(:base, message)
-    end
+  def default_attributes
+    {
+      name: user.name, 
+      email: user.email, 
+      department: user.department, 
+      password: user.password, 
+      password_confirmation: user.password, 
+      joining_date: paid_leave.joining_date, 
+      base_date: paid_leave.base_date, 
+      part_time: paid_leave.part_time, 
+      classification: paid_leave.classification,
+      company_car: car.company_car,
+      private_car: car.private_car,
+      granted_piece: grant.granted_piece,
+      granted_day: grant.granted_day,
+      paid_leave_id: paid_leave.id
+    }
   end
 end

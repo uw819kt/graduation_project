@@ -1,73 +1,64 @@
-<%= form_with model: [:admin, @user], remote: false do |form| %>  
-  <% if @registration_form.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(@registration_form.errors.count, "error") %> prohibited this paid_leafe from being saved:</h2>
-
+<%= form_with model: [:admin, @user], url: admin_user_path(@user), remote: false do |form| %>  
+  <% if @user.errors.any? %>
+    <div class="alert alert-danger" role="alert">
       <ul>
-        <% @registration_form.errors.each do |error| %>
+        <% @user.errors.each do |error| %>
           <li><%= error.full_message %></li>
         <% end %>
       </ul>
     </div>
   <% end %>
-  <h1><%= t('addition.Editing user') %></h1>
 
+  <% if @paid_leave.errors.any? %>
+    <div class="alert alert-danger" role="alert">
+      <ul>
+        <% @paid_leave.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <h1><%= t('addition.Editing user') %></h1>
 
   <h2><%= t('addition.basic information') %></h2>
 
   <%= fields_for @user do |form| %>
     <div>
       <%= form.label :name %>
-      <%= form.text_field :name %>
+      <%= form.text_field :name, class: "form-control" %>
     </div>
 
     <div>
      <%= form.label :email %>
-     <%= form.text_field :email %>
+     <%= form.text_field :email, class: "form-control" %>
     </div>
 
     <div>
       <%= form.label :department %>
-      <%= form.select :department, User.departments.keys, { include_blank: true } %>
+      <%= form.select :department, User.departments.keys.map {|k| [I18n.t("enums.user.department.#{k}"), k]}, { include_blank: true }, class: "form-control" %>
     </div>
 
     <div>
       <%= form.label :password %>
-      <%= form.text_field :password %>
+      <%= form.password_field :password, class: "form-control" %>
     </div>
 
     <div>
       <%= form.label :password_confirmation %>
-      <%= form.password_field :password_confirmation %>
-    </div>
-  <% end %>
-
-  <%= fields_for form.object.paid_leave do |form| %>
-    <div>
-      <%= form.label :joining_date %>
-      <%= form.date_field :joining_date %>
-    </div>
-
-    <div>
-      <%= form.label :part_time %>
-      <%= form.check_box :part_time, {checked: false}, true, false  %>
-    </div>
-
-    <div>
-      <%= form.label :classification %>
-      <%= form.select :classification, PaidLeave.classifications.keys, { include_blank: true } %>
+      <%= form.password_field :password_confirmation, class: "form-control" %>
     </div>
   <% end %>
 
   <%= fields_for form.object.car do |form| %>
     <div>
       <%= form.label :company_car %>
-      <%= form.text_field :company_car %>
+      <%= form.text_field :company_car, class: "form-control" %>
     </div>
 
     <div>
       <%= form.label :private_car %>
-      <%= form.text_field :private_car %>
+      <%= form.text_field :private_car, class: "form-control" %>
     </div>
   <% end %>
 
@@ -75,43 +66,58 @@
 
 <%= fields_for form.object.paid_leave do |form| %>
   <div>
+    <%= form.label :joining_date %>
+    <%= form.date_field :joining_date, class: "form-control" %>
+  </div>
+
+  <div>
     <%= form.label :base_date %>
-    <%= form.date_field :base_date %>
+    <%= form.date_field :base_date, class: "form-control" %>
+  </div>
+
+  <div>
+    <%= form.label :part_time %>
+    <%= form.check_box :part_time, {checked: false}, true, false  %>
+  </div>
+
+  <div>
+    <%= form.label :classification %>
+    <%= form.select :classification, PaidLeave.classifications.keys.map {|k| [I18n.t("enums.paid_leave.classification.#{k}"), k]}, { include_blank: true }, class: "form-control" %>
   </div>
 
   <div>
     <p><%= t('addition.Total Days') %>&nbsp;&nbsp;<%= @total_days %></p>
-    <%= form.label :adjustment_value, "Adjustment (add/subtract)" %>
-    <%= form.number_field :adjustment_value, value: 0 %>
+    <%= form.label :adjustment_value, "調整（+/-）" %>
+    <%= form.number_field :adjustment_value, value: 0, class: "form-control" %>
   </div>
 
   <div>
     <p><%= t('addition.Possession') %>&nbsp;&nbsp;<%= @discrimination %></p>
-    <%= form.label :adjustment_plan_value, "Adjustment (add/subtract)" %> 
-    <%= form.number_field :adjustment_plan_value, value: 0 %> 
+    <%= form.label :adjustment_plan_value, "調整（+/-）" %> 
+    <%= form.number_field :adjustment_plan_value, value: 0, class: "form-control" %> 
   </div>
 
   <div>
     <p><%= t('addition.Carry Over') %>&nbsp;&nbsp;<%= @carry_over %></p>
-    <%= form.label :adjustment_carry_over, "Adjustment (add/subtract)" %> 
-    <%= form.number_field :adjustment_carry_over, value: 0 %> 
+    <%= form.label :adjustment_carry_over, "調整（+/-）" %> 
+    <%= form.number_field :adjustment_carry_over, value: 0, class: "form-control" %> 
   </div>
 <% end %>
 
 <%= fields_for form.object.grant do |form| %>
   <div>
-    <%= form.label :granted_piece %>
-    <%= form.number_field :granted_piece, min: 0 %>
+    <%= form.label :granted_piece, "有給付与予定数" %>
+    <%= form.number_field :granted_piece, min: 0, class: "form-control" %>
   </div>
 
   <div>
-    <%= form.label :granted_day %>
-    <%= form.date_field :granted_day %>
+    <%= form.label :granted_day, "有給付与予定日" %>
+    <%= form.date_field :granted_day, class: "form-control" %>
   </div>
 <% end %>
 
   <div>
-    <%= form.submit %>
+    <%= form.submit class: "btn btn-outline-primary mt-4" %>
   </div>
 <% end %>
 
@@ -119,5 +125,5 @@
 <br>
 
 <div>
-  <%= link_to "Back to users", admin_users_path %>
+  <%= link_to t('addition.Back'), admin_users_path %>
 </div>

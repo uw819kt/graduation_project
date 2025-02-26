@@ -4,6 +4,5 @@ class Grant < ApplicationRecord
 
   validates :granted_piece, presence: true
   validates :granted_day, presence: true
-  validates :user_id, presence: true, on: :update
   validates :paid_leave_id, presence: true, on: :update
 end

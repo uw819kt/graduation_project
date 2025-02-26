@@ -4,7 +4,12 @@ Rails.application.routes.draw do
     resources :users
   end
   resources :alcohol_logs
-  resources :paid_leaves
+  resources :paid_leaves do
+    collection do
+      # resources :request, only: [:create, :new]
+      resources :approval, only: [:create, :new, :edit, :update]
+    end
+  end
   devise_scope :user do
     root to: 'devise/sessions#new'
   end

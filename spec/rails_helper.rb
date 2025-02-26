@@ -37,6 +37,10 @@ RSpec.configure do |config|
   config.fixture_paths = [
     Rails.root.join('spec/fixtures')
   ]
+  config.include Devise::Test::IntegrationHelpers, type: :request
+  config.include Devise::Test::ControllerHelpers, type: :controller
+  config.include Devise::Test::ControllerHelpers, type: :view
+  config.include Devise::Test::IntegrationHelpers, type: :system
 
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false
@@ -65,15 +69,14 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
- config.include FactoryBot::Syntax::Methods
-   config.before(:each) do |example|
-     if example.metadata[:type] == :system
-       if example.metadata[:js]
-         driven_by :selenium, using: :headless_chrome, screen_size: [1400, 1400]
-       else
-         driven_by :rack_test
-       end
-     end
+  config.include FactoryBot::Syntax::Methods
+  config.before(:each) do |example|
+    if example.metadata[:type] == :system
+      if example.metadata[:js]
+        driven_by :selenium, using: :headless_chrome, screen_size: [1400, 1400]
+      else
+        driven_by :rack_test
+      end
     end
   end
 end

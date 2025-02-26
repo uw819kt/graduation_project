@@ -1,13 +1,16 @@
 
 
 <h1><%= t('addition.Alcohol logs') %></h1>
-<p>興和電気株式会社</p>
+<p class="d-flex justify-content-end">興和電気株式会社</p>
 <!-- 検索フォーム -->
 <%= I18n.l(Date.today, format: :middle) %>
 
-<table>
+<div class="container">
+  <div class="row">
+    <div class="col-12 col-md-6">
+<table class="table table-striped m-0">
   <tbody>
-    <tr>
+    <tr class="table-primary">
       <td colspan="2"><%= t('addition.name&car number') %></td>
       <td colspan="7"><%= t('addition.before driving') %></td>
     </tr>
@@ -38,12 +41,14 @@
     <% end %>
   </tbody>
 </table>
+</div>
 
-<table>
+<div class="col-12 col-md-6">
+<table class="table table-striped m-0">
   <tbody>
-    <tr>
+    <tr class="table-primary">
       <td colspan="7"><%= t('addition.after driving') %></td>
-      <td><%= t('addition.confirmation field') %></td>
+      <td colspan="2"><%= t('addition.confirmation field') %></td>
     </tr>
 
     <tr>
@@ -55,6 +60,7 @@
       <td><%= t('activerecord.attributes.alcohol_log.log_remarks') %></td>
       <td><%= t('addition.confirmer') %></td>
       <td><%= t('addition.admin') %></td>
+      <td></td>
     </tr>
           
     <% @after_driving_logs.each do |log| %>
@@ -68,8 +74,11 @@
         <td></td> <!-- 空欄 -->
         <td></td> <!-- 空欄 -->
 
-        <td><%= link_to t('addition.Show'), alcohol_log_path(log.user.id) %></td>
+        <td><%= link_to t('addition.Show'), alcohol_log_path(log.user.id), class: "btn btn-outline-primary btn-sm" %></td>
       </tr>
     <% end %>     
   </tbody>
 </table>
+</div>
+  </div>
+</div>

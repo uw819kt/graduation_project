@@ -1,8 +1,8 @@
-<%= form_with(model: @paid_leave, remote: false) do |form| %>
-  <% if @paid_leave.errors.any? %>
-    <div style="color: red">
+<%= form_with(model: @approval, url: approval_index_path, remote: false) do |form| %>
+  <% if @approval.errors.any? %>
+    <div class="alert alert-danger" role="alert">
       <ul>
-        <% @paid_leave.errors.each do |error| %>
+        <% @approval.errors.each do |error| %>
           <li><%= error.full_message %></li>
         <% end %>
       </ul>
@@ -11,7 +11,6 @@
 
   <h1><%= t('addition.New paid leave') %></h1>
   
-  <%= form.fields_for :requests do |form| %>
     <div>
       <%= form.label :request_date %>
       <%= form.date_field :request_date, class: "form-control" %>
@@ -24,18 +23,16 @@
 
     <div>
       <%= form.label :paid_remarks %>
-      <p>※ 特記事項あれば記入 例）介護休暇</p>
-      <%= form.text_area :paid_remarks, class: "form-control" %>
+      <%= form.text_area :paid_remarks, class: "form-control", placeholder: "特記事項あれば記入 例）介護休暇" %>
     </div>
 
     <div>
       <%= form.submit class: "btn btn-outline-primary mt-4" %>
     </div>
-  <% end %>
 <% end %>
 
 <br>
 
 <div>
-  <%= link_to t('addition.Back'), paid_leaves_path, class: "text-decoration-none d-flex justify-content-end" %>
+  <%= link_to t('addition.Back'), paid_leaves_path, class: "text-decoration-none" %>
 </div>

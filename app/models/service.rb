@@ -1,17 +1,19 @@
 class Service
 # 計算用クラス
-  attr_accessor :user, :approvals, :paid_leafe, :adjustment_value,
-    :adjustment_plan_value, :adjustment_carry_value, :part_time, :classification
+  attr_accessor :user, :approvals, :paid_leave, :adjustment_value,
+    :adjustment_plan_value, :adjustment_carry_value, :part_time, :classification, :base_date, :joining_date
 
-  def initialize(user, approvals, adjustment_value = 0, adjustment_plan_value = 0, adjustment_carry_value = 0, part_time, classification)
+  def initialize(user, approvals, adjustment_value = 0, adjustment_plan_value = 0, adjustment_carry_value = 0, part_time, classification, base_date, joining_date)
     @user = user
-    @paid_leafe = paid_leafe
+    @paid_leave = paid_leave
     @approvals = approvals
     @adjustment_value = adjustment_value
     @adjustment_plan_value = adjustment_plan_value
     @adjustment_carry_value = adjustment_carry_value
     @part_time = part_time
     @classification = classification
+    @base_date = base_date
+    @joining_date = joining_date
   end
 
   def carry_over # 前年度繰越分
@@ -48,11 +50,8 @@ class Service
   end
 
   def years_of_service # 勤続年数
-    base_date = PaidLeave.pluck(:base_date)
-    joining_date = PaidLeave.pluck(:joining_date)
-
-    reference = base_date.zip(joining_date).map { |base_date, joining_date|(base_date - joining_date).to_i/ 365.25 }
-    @years_of_service = reference.map { |num| num.round(1)}.join
+    reference = (base_date - joining_date).to_i/ 365.25
+    @years_of_service = reference.round(1)
   end
 
   def adjusted_plan # 有給休暇付与予定日数(調整)

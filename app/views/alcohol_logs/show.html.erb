@@ -1,13 +1,15 @@
-
-
 <h1><%= t('addition.alcohole log show') %></h1>
-<p><%= t('activerecord.attributes.user.department') %>&nbsp;&nbsp;<%= @alcohol_log.user.department_i18n %></p>
-<p><%= t('activerecord.attributes.user.name') %>&nbsp;&nbsp;<%= @alcohol_log.user.name %></p>
 
-<table>
+<p class="d-flex justify-content-end text-decoration-underline"><%= t('activerecord.attributes.user.department') %>&nbsp;&nbsp;<%= @alcohol_log.user.department_i18n %></p>
+<p class="d-flex justify-content-end text-decoration-underline"><%= t('activerecord.attributes.user.name') %>&nbsp;&nbsp;<%= @alcohol_log.user.name %></p>
+
+<div class="container">
+  <div class="row">
+    <div class="col-12 col-md-6">
+<table class="table table-striped ml-0">
   <tbody>
-    <tr>
-      <td><%= t('addition.car number') %></td>
+    <tr class="table-primary">
+      <td style="font-size: 15px;"><%= t('addition.car number') %></td>
       <td colspan="7"><%= t('addition.before driving') %></td>
     </tr>
 
@@ -36,10 +38,12 @@
     <% end %>
   </tbody>
 </table>
+</div>
 
-<table>
+<div class="col-12 col-md-6">
+<table class="table table-striped">
   <tbody>
-    <tr>
+    <tr class="table-primary">
       <td colspan="7"><%= t('addition.after driving') %></td>
       <td><%= t('addition.confirmation field') %></td>
     </tr>
@@ -70,9 +74,9 @@
   </tbody>
 </table>
 
-<div>
-  <%= link_to t('addition.Back'), alcohol_logs_path %>
+<div class="d-flex justify-content-end">
+  <%= link_to t('addition.Back'), alcohol_logs_path, class: "text-decoration-none" %>
   <% if current_user.admin? %> 
-   | <%= link_to t('addition.Edit'), edit_alcohol_log_path(@alcohol_log) %>
+   | <%= link_to t('addition.Edit'), edit_alcohol_log_path(@alcohol_log), class: "text-decoration-none" %>
   <% end %>
 </div>
