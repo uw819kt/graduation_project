@@ -2,9 +2,18 @@
   "name": "app",
   "private": true,
   "devDependencies": {
+    "@hotwired/turbo-rails": "^7.0.0",
+    "bootstrap": "^5.3.0",
     "esbuild": "^0.25.0"
   },
   "scripts": {
-    "build": "esbuild app/javascript/*.* --bundle --sourcemap --format=esm --outdir=app/assets/builds --public-path=/assets"
+    "build": "esbuild app/javascript/*.* --bundle --sourcemap --format=esm --outdir=app/assets/builds --public-path=/assets",
+    "build:css": "esbuild app/assets/stylesheets/application.css --outdir=app/assets/builds/application-build.css"
+  },
+  "dependencies": {
+    "@popperjs/core": "^2.11.8"
+  },
+  "engines": {
+    "node": "18.20.5"
   }
 }

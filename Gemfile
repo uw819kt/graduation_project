@@ -69,3 +69,4 @@ gem 'devise'
 gem 'rexml'
 gem 'cssbundling-rails'
 gem 'foreman'
+
