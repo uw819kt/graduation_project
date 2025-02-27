@@ -38,6 +38,9 @@
       <th><%= t('addition.Approval Stamp') %></th>
       <th><%= t('addition.Remarks') %></th>
       <th><%= t('addition.Applicable') %></th>
+      <% if current_user.admin? %>
+        <th></th>
+      <% end %>
     </tr>
   </thead>
     
