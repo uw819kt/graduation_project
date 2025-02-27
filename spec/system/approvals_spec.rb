@@ -3,9 +3,9 @@ require 'rails_helper'
 
 RSpec.describe '有給休暇登録管理機能', type: :system do
   describe '登録機能' do
-    let!(:user) { FactoryBot.create(:user) } 
+    let!(:user) { FactoryBot.create(:user, :paid_leave) } 
     context '有給休暇申請の登録をした場合' do
-      it '登録した有給休暇申請の一覧が表示される' do
+      it '有給休暇取得計画表一覧画面に戻る' do
         sign_in user
         visit paid_leaves_path
         click_on '有給休暇取得申請'
@@ -18,9 +18,9 @@ RSpec.describe '有給休暇登録管理機能', type: :system do
   end
 
   describe '編集機能' do
-    let!(:user) { FactoryBot.create(:user) } 
+    let!(:user) { FactoryBot.create(:user, :paid_leave) } 
     context '有給休暇申請の編集をした場合' do
-      it '登録した有給休暇申請の一覧が表示される' do
+      it '有給休暇取得計画表一覧画面に戻る' do
         sign_in user
         visit paid_leaves_path
         click_on '編集'

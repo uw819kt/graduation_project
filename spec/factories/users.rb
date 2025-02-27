@@ -24,6 +24,18 @@ FactoryBot.define do
         create(:alcohol_log, user: user)
       end
     end
+
+    trait :grant do
+      after(:create) do |user|
+        create(:grant, user: user)
+      end
+    end
+
+    trait :approval do
+      after(:create) do |user|
+        create(:approval, user: user)
+      end
+    end
   end
 
   factory :second_user, class: User do

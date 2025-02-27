@@ -19,6 +19,26 @@
     </div>
   <% end %>
 
+  <% if @car.errors.any? %>
+    <div class="alert alert-danger" role="alert">
+      <ul>
+        <% @car.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <% if @grant.errors.any? %>
+    <div class="alert alert-danger" role="alert">
+      <ul>
+        <% @grant.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
   <h1><%= t('addition.Editing user') %></h1>
 
   <h2><%= t('addition.basic information') %></h2>
@@ -83,24 +103,6 @@
   <div>
     <%= form.label :classification %>
     <%= form.select :classification, PaidLeave.classifications.keys.map {|k| [I18n.t("enums.paid_leave.classification.#{k}"), k]}, { include_blank: true }, class: "form-control" %>
-  </div>
-
-  <div>
-    <p><%= t('addition.Total Days') %>&nbsp;&nbsp;<%= @total_days %></p>
-    <%= form.label :adjustment_value, "調整（+/-）" %>
-    <%= form.number_field :adjustment_value, value: 0, class: "form-control" %>
-  </div>
-
-  <div>
-    <p><%= t('addition.Possession') %>&nbsp;&nbsp;<%= @discrimination %></p>
-    <%= form.label :adjustment_plan_value, "調整（+/-）" %> 
-    <%= form.number_field :adjustment_plan_value, value: 0, class: "form-control" %> 
-  </div>
-
-  <div>
-    <p><%= t('addition.Carry Over') %>&nbsp;&nbsp;<%= @carry_over %></p>
-    <%= form.label :adjustment_carry_over, "調整（+/-）" %> 
-    <%= form.number_field :adjustment_carry_over, value: 0, class: "form-control" %> 
   </div>
 <% end %>
 
