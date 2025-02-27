@@ -1,13 +1,15 @@
-<%= form_with(model: @approval, url: approval_path(@approval), remote: false) do |form| %>
-  <% if @approval.errors.any? %>
-    <div class="alert alert-danger" role="alert">
-      <ul>
-        <% @approval.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
+<div class="row">
+  <div class="col-8">
+  <%= form_with(model: @approval, url: approval_path(@approval), remote: false) do |form| %>
+    <% if @approval.errors.any? %>
+      <div class="alert alert-danger" role="alert">
+        <ul>
+          <% @approval.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
 
   <h1><%= t('addition.Editing Paid Leave') %></h1>
 
@@ -34,7 +36,9 @@
     <div>
       <%= form.submit class: "btn btn-outline-primary mt-4" %>
     </div>
-<% end %>
+  <% end %>
+  </div>
+</div>
 
 
-<br>
+

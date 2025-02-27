@@ -1,13 +1,15 @@
-<%= form_with(model: @approval, url: approval_index_path, remote: false) do |form| %>
-  <% if @approval.errors.any? %>
-    <div class="alert alert-danger" role="alert">
-      <ul>
-        <% @approval.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
+<div class="row">
+  <div class="col-8">
+  <%= form_with(model: @approval, url: approval_index_path, remote: false) do |form| %>
+    <% if @approval.errors.any? %>
+      <div class="alert alert-danger" role="alert">
+        <ul>
+          <% @approval.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
 
   <h1><%= t('addition.New paid leave') %></h1>
   
@@ -33,6 +35,9 @@
 
 <br>
 
-<div>
-  <%= link_to t('addition.Back'), paid_leaves_path, class: "text-decoration-none" %>
+    <div>
+      <%= link_to t('addition.Back'), paid_leaves_path, class: "text-decoration-none" %>
+    </div>
+  </div>
 </div>
+

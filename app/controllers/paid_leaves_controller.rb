@@ -28,7 +28,8 @@ class PaidLeavesController < ApplicationController
   def show
     user = PaidLeave.find(params[:id])
     part_time =  @paid_leave.part_time
-    approvals = Approval.all
+
+    approvals = @paid_leave.approvals
     classification = @paid_leave.classification
     base_date = @paid_leave.base_date
     joining_date = @paid_leave.joining_date

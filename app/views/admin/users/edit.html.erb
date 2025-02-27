@@ -1,43 +1,45 @@
-<%= form_with model: [:admin, @user], url: admin_user_path(@user), remote: false do |form| %>  
-  <% if @user.errors.any? %>
-    <div class="alert alert-danger" role="alert">
-      <ul>
-        <% @user.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
+<div class="row">
+  <div class="col-8">
+  <%= form_with model: [:admin, @user], url: admin_user_path(@user), remote: false do |form| %>  
+    <% if @user.errors.any? %>
+      <div class="alert alert-danger" role="alert">
+        <ul>
+          <% @user.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
 
-  <% if @paid_leave.errors.any? %>
-    <div class="alert alert-danger" role="alert">
-      <ul>
-        <% @paid_leave.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
+    <% if @paid_leave.errors.any? %>
+      <div class="alert alert-danger" role="alert">
+        <ul>
+          <% @paid_leave.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
 
-  <% if @car.errors.any? %>
-    <div class="alert alert-danger" role="alert">
-      <ul>
-        <% @car.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
+    <% if @car.errors.any? %>
+      <div class="alert alert-danger" role="alert">
+        <ul>
+          <% @car.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
 
-  <% if @grant.errors.any? %>
-    <div class="alert alert-danger" role="alert">
-      <ul>
-        <% @grant.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
+    <% if @grant.errors.any? %>
+      <div class="alert alert-danger" role="alert">
+        <ul>
+          <% @grant.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
 
   <h1><%= t('addition.Editing user') %></h1>
 
@@ -57,6 +59,11 @@
     <div>
       <%= form.label :department %>
       <%= form.select :department, User.departments.keys.map {|k| [I18n.t("enums.user.department.#{k}"), k]}, { include_blank: true }, class: "form-control" %>
+    </div>
+
+    <div>
+      <%= form.label :admin %>
+      <%= form.check_box :admin %>
     </div>
 
     <div>
@@ -82,50 +89,49 @@
     </div>
   <% end %>
 
-<h2><%= t('addition.paid leave information') %></h2>
+  <h2><%= t('addition.paid leave information') %></h2>
 
-<%= fields_for form.object.paid_leave do |form| %>
+  <%= fields_for form.object.paid_leave do |form| %>
+    <div>
+      <%= form.label :joining_date %>
+      <%= form.date_field :joining_date, class: "form-control" %>
+    </div>
+
+    <div>
+      <%= form.label :base_date %>
+      <%= form.date_field :base_date, class: "form-control" %>
+    </div>
+
+    <div>
+      <%= form.label :part_time %>
+      <%= form.check_box :part_time, {checked: false}, true, false  %>
+    </div>
+
+    <div>
+      <%= form.label :classification %>
+      <%= form.select :classification, PaidLeave.classifications.keys.map {|k| [I18n.t("enums.paid_leave.classification.#{k}"), k]}, { include_blank: true }, class: "form-control" %>
+    </div>
+  <% end %>
+
+  <%= fields_for form.object.grant do |form| %>
+    <div>
+      <%= form.label :granted_piece, "有給付与予定数" %>
+      <%= form.number_field :granted_piece, min: 0, class: "form-control" %>
+    </div>
+
+    <div>
+      <%= form.label :granted_day, "有給付与予定日" %>
+      <%= form.date_field :granted_day, class: "form-control" %>
+    </div>
+  <% end %>
+
+    <div>
+      <%= form.submit class: "btn btn-outline-primary mt-4" %>
+    </div>
+  <% end %>
+
   <div>
-    <%= form.label :joining_date %>
-    <%= form.date_field :joining_date, class: "form-control" %>
+    <%= link_to t('addition.Back'), admin_users_path %>
   </div>
-
-  <div>
-    <%= form.label :base_date %>
-    <%= form.date_field :base_date, class: "form-control" %>
   </div>
-
-  <div>
-    <%= form.label :part_time %>
-    <%= form.check_box :part_time, {checked: false}, true, false  %>
-  </div>
-
-  <div>
-    <%= form.label :classification %>
-    <%= form.select :classification, PaidLeave.classifications.keys.map {|k| [I18n.t("enums.paid_leave.classification.#{k}"), k]}, { include_blank: true }, class: "form-control" %>
-  </div>
-<% end %>
-
-<%= fields_for form.object.grant do |form| %>
-  <div>
-    <%= form.label :granted_piece, "有給付与予定数" %>
-    <%= form.number_field :granted_piece, min: 0, class: "form-control" %>
-  </div>
-
-  <div>
-    <%= form.label :granted_day, "有給付与予定日" %>
-    <%= form.date_field :granted_day, class: "form-control" %>
-  </div>
-<% end %>
-
-  <div>
-    <%= form.submit class: "btn btn-outline-primary mt-4" %>
-  </div>
-<% end %>
-
-
-<br>
-
-<div>
-  <%= link_to t('addition.Back'), admin_users_path %>
 </div>

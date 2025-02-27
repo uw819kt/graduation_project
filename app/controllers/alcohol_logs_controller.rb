@@ -17,12 +17,8 @@ class AlcoholLogsController < ApplicationController
 
   # GET /alcohol_logs/new
   def new
-    @alcohol_log = AlcoholLog.new(user_id: current_user.id)
-    @car = Car.all
-  end
-
-  # GET /alcohol_logs/1/edit
-  def edit
+    @alcohol_log = AlcoholLog.new(user_id: current_user.id, car_id: current_user.car.id)
+    @alcohol_log.build_car
   end
 
   # POST /alcohol_logs or /alcohol_logs.json
@@ -31,6 +27,7 @@ class AlcoholLogsController < ApplicationController
     @alcohol_log.user = current_user
     @alcohol_log.check_time = Time.zone.now
     @alcohol_log.build_car
+    @alcohol_log.car_id = current_user.car.id
 
     respond_to do |format|
       if @alcohol_log.save
@@ -41,6 +38,10 @@ class AlcoholLogsController < ApplicationController
         format.json { render json: @alcohol_log.errors, status: :unprocessable_entity }
       end
     end
+  end
+
+  # GET /alcohol_logs/1/edit
+  def edit
   end
 
   # PATCH/PUT /alcohol_logs/1 or /alcohol_logs/1.json
@@ -67,13 +68,12 @@ class AlcoholLogsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_alcohol_log
-      @alcohol_log = AlcoholLog.find(params[:id])
-    end
-
-    # Only allow a list of trusted parameters through.
-    def alcohol_log_params
-      params.require(:alcohol_log).permit(:check_time, :confirmation, :detector_used, :result, :condition, :log_remarks, :user_id, :car_id, :driving_status)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_alcohol_log
+    @alcohol_log = AlcoholLog.find(params[:id])
+  end
+  # Only allow a list of trusted parameters through.
+  def alcohol_log_params
+    params.require(:alcohol_log).permit(:check_time, :confirmation, :detector_used, :result, :condition, :log_remarks, :user_id, :car_id, :driving_status)
+  end
 end
