@@ -3,10 +3,17 @@ class AlcoholLogsController < ApplicationController
 
   # GET /alcohol_logs or /alcohol_logs.json
   def index
+    @q = AlcoholLog.ransack(params[:q])
+
+    if params[:q].nil?
+      @q = AlcoholLog.ransack(check_time_gteq: Date.current, check_time_lteq: Date.current)
+    else
+      @q = AlcoholLog.ransack(params[:q])
+    end
+    
     @users = User.includes(:car, :alcohol_logs).all
-    @before_driving_logs = AlcoholLog.includes(:user).where(user_id: @users.ids, driving_status: 0).order(:check_time)
-    @after_driving_logs = AlcoholLog.includes(:user).where(user_id: @users.ids, driving_status: 1).order(:check_time)
-    # @alcohol_log = @user.alcohol_logs.where(check_time: Date.today).order(:check_time, :driving_status)
+    @before_driving_logs = @q.result.includes(:user).where(user_id: @users.ids, driving_status: 0).order(:check_time)
+    @after_driving_logs = @q.result.includes(:user).where(user_id: @users.ids, driving_status: 1).order(:check_time)
   end
 
   # GET /alcohol_logs/1 or /alcohol_logs/1.json

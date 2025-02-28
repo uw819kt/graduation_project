@@ -2,7 +2,14 @@
 
 <h1><%= t('addition.Alcohol logs') %></h1>
 <p class="d-flex justify-content-end">興和電気株式会社</p>
-<!-- 検索フォーム -->
+
+<%= form_with(model: @q, url: alcohol_logs_path, method: :get, remote: false) do |f| %>
+  <%= f.date_field :check_time_gteq, class: 'form-control' %>
+  <span>~</span>
+  <%= f.date_field :check_time_lteq, class: 'form-control'%>
+  <%= f.submit '検索', class: "btn btn-outline-primary mt-4" %>
+ <%end%>
+
 <%= I18n.l(Date.today, format: :middle) %>
 
 <div class="container">
