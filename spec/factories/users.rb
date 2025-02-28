@@ -8,15 +8,11 @@ FactoryBot.define do
     admin { true }
 
     trait :paid_leave do
-      after(:create) do |user|
-        create(:paid_leave, user: user)
-      end
+      after(:create) { |user| create(:paid_leave, user: user) }
     end
 
     trait :car do
-      after(:create) do |user|
-        create(:car, user: user) 
-      end
+      after(:create) { |user| create(:car, user: user) }
     end
 
     trait :alcohol_log do
@@ -27,15 +23,15 @@ FactoryBot.define do
     end
 
     trait :grant do
-      after(:create) do |user|
-        create(:grant, user: user)
-      end
+      after(:create) { |user| create(:grant, user: user) }
     end
 
     trait :approval do
-      after(:create) do |user|
-        create(:approval, user: user)
-      end
+      after(:create) { |user| create(:approval, user: user) }
+    end
+
+    trait :new_approval do
+      after(:create) { |user| create(:new_approval, user: user) }
     end
   end
 

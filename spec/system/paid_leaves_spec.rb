@@ -19,13 +19,11 @@ RSpec.describe '有給休暇一覧表示機能', type: :system do
       expect(page).to have_content 9
     end
 
-    it '通常の有給適用の日数が月ごとに集計されて表示される' do
+    it '通常の有給適用の日数が取得数実績に表示される' do
       sign_in user
       visit paid_leaves_path
-      num = [0, 0, 0, 0, 0, 0, 1] 
-      page.all('tbody tr').each_with_index do |tr, idx|
-        expect(tr.all("td")[14].text).to eq num[idx]
-      end
+      expect(page).to have_content "有給休暇取得計画表（年間）"
+      expect(all("#target").first).to have_content("1")
     end
   end
 
@@ -35,12 +33,20 @@ RSpec.describe '有給休暇一覧表示機能', type: :system do
       it '通常の有給適用の数を差し引いた有給残日数が表示される' do
         sign_in user
         visit paid_leaves_path
-        # click_on '詳細'
-        # expect(page).to have_text 9
+        page.all('.btn.btn-outline-primary')[1].click #詳細クリック
+        expect(page).to have_text "2025年度 年次有給休暇管理表"
+        expect(all("#target").first).to have_content("19")
       end
+    end
 
+    context '「詳細」ボタンを押した場合' do
+      let!(:user) { FactoryBot.create(:user, :paid_leave, :new_approval) }
       it '特別有給適用の日数は有給残日数にカウントされない' do
-      # expect(page).to have_text 9
+        sign_in user
+        visit paid_leaves_path
+        page.all('.btn.btn-outline-primary')[1].click #詳細クリック
+        expect(page).to have_text "2025年度 年次有給休暇管理表"
+        expect(all("#target").first).to have_content("20")
       end
     end
   end

@@ -29,7 +29,7 @@
         @paid_leave = @user.build_paid_leave(paid_leave_params)
         @grant = @paid_leave.build_grant(grant_params)
         @grant.user = @user
-        @user.build_car(car_params)
+        @car = @user.build_car(car_params)
         
         if @user.save
           flash[:notice] = "社員情報の登録が完了しました"

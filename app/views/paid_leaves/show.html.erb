@@ -50,7 +50,7 @@
         <td><%= index + 1 %></td>
         <td><%= I18n.l(approval.request_date, format: :middle) %></td>
         <td><%= I18n.l(approval.acquisition_date, format: :middle) %></td>
-        <td><%= @total_days %></td>
+        <td id="target"><%= @total_days %></td>
         <td></td> <!-- 空のセル -->
         <td></td> <!-- 空のセル -->
         <td><%= approval.paid_remarks %></td>

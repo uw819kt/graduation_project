@@ -3,8 +3,8 @@ Rails.application.routes.draw do
   namespace :admin do
     resources :users
   end
-  resources :alcohol_logs
-  resources :paid_leaves do
+  resources :alcohol_logs, only: [:index, :show, :new, :create, :edit, :update]
+  resources :paid_leaves, only: [:index, :show] do
     collection do
       # resources :request, only: [:create, :new]
       resources :approval, only: [:create, :new, :edit, :update]

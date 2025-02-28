@@ -32,7 +32,7 @@
       <td><%= I18n.l(service[:user].paid_leave.base_date, format: :middle) %></td>
       <td><%= service[:discrimination] %></td>
       <td><%= service[:discrimination] %></td>
-      <td><%= service[:achievements] %></td>
+      <td id="target"><%= service[:achievements] %></td>
 
       <% (4..12).each do |month| %>
         <td>

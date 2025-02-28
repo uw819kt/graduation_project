@@ -6,6 +6,6 @@ class Car < ApplicationRecord
 
   validates :company_car, length: { maximum: 30 }
   validates :private_car, length: { maximum: 30 }
-  validates :company_car, presence: { allow_nil: true, allow_blank: true }, on: [:create, :update]
-  validates :private_car, presence: { allow_nil: true, allow_blank: true }, on: [:create, :update]
+  validates :company_car, presence: { allow_nil: true, allow_blank: true }
+  validates :private_car, presence: { allow_nil: true, allow_blank: true }
 end
