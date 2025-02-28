@@ -36,11 +36,16 @@ class User < ApplicationRecord
     others: 5
     }
 
-    def user_validate
-      return unless user.invalid?
-  
+  def user_validate
+    return unless user.invalid?
       user.errors.full_messages.each do |message|
-        errors.add(:base, message)
-      end
+      errors.add(:base, message)
     end
+  end
+
+  def self.guest
+    find_or_create_by!(email: 'guest@example.com') do |user|
+      user.password = SecureRandom.urlsafe_base64
+    end
+  end
 end

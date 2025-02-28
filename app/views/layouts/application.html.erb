@@ -37,6 +37,11 @@
                 <%= button_to t('addition.nav.log out'), destroy_user_session_path, method: :delete, data: { turbo_method: :delete }, class: "btn btn-outline-info btn-sm" %>
             </div>
             <% end %>
+          <% else %>
+            <div class="d-flex justify-content-end column-gap-3">
+              <%= link_to 'ゲストログイン（一般ユーザ）', guest_sign_in_path, class: "text-decoration-none text-primary" %>
+              <%= link_to 'ゲストログイン（管理者）', admin_guest_sign_in_path, class: "text-decoration-none text-primary" %>
+            </div>  
           <% end %>
       </nav>
     </header>

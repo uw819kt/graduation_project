@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_02_14_134959) do
+ActiveRecord::Schema[7.2].define(version: 2025_02_28_132524) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -66,7 +66,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_14_134959) do
   create_table "paid_leaves", force: :cascade do |t|
     t.date "joining_date", null: false
     t.date "base_date", null: false
-    t.boolean "part_time", default: false, null: false
+    t.boolean "part_time", default: false
     t.integer "classification"
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false

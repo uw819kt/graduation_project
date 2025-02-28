@@ -52,4 +52,8 @@ class PaidLeavesController < ApplicationController
     def paid_leave_params
       params.require(:paid_leave).permit(:joining_date, :base_date, :part_time, :user_id, :paid_remarks, request_atteibutes: [:request_date, :acquisition_date, :paid_remarks], approve_attributes: [:id, :request_date, :acquisition_date, :paid_remarks])
     end
+
+    def guest_user?
+      current_user.email == 'guest@example.com'
+    end
 end
