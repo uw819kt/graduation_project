@@ -21,7 +21,8 @@ FactoryBot.define do
 
     trait :alcohol_log do
       after(:create) do |user|
-        create(:alcohol_log, user: user)
+        # car = create(:car, user: user)
+        create(:alcohol_log, user: user, car: user.car)
       end
     end
 
@@ -49,6 +50,12 @@ FactoryBot.define do
     trait :paid_leave_second do
       after(:create) do |user|
         create(:paid_leave, user: user)
+      end
+    end
+
+    trait :second_car do
+      after(:create) do |user|
+        create(:car, user: user) 
       end
     end
   end

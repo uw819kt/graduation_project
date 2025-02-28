@@ -21,6 +21,11 @@
     </div>
 
     <div>
+      <%= form.label :check_time %>
+      <%= form.datetime_local_field :check_time, class: "form-control" %>
+    </div>
+
+    <div>
       <%= form.label :confirmation %>
       <%= form.select :confirmation, @alcohol_log.class.confirmations.keys.map {|k| [I18n.t("enums.alcohol_log.confirmation.#{k}"), k]}, {}, class: "form-control" %>
     </div>

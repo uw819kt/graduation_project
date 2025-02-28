@@ -6,8 +6,7 @@
 <%= I18n.l(Date.today, format: :middle) %>
 
 <div class="container">
-  <div class="row">
-    <div class="col-12 col-md-6">
+ <div class="col-12">
 <table class="table table-striped m-0">
   <tbody>
     <tr class="table-primary">
@@ -17,6 +16,7 @@
 
     <tr>
       <td><%= t('activerecord.attributes.user.name') %></td>
+      <td><%= t('activerecord.attributes.alcohol_log.car_id') %></td>
       <td><%= t('activerecord.attributes.alcohol_log.check_time') %></td>
       <td><%= t('activerecord.attributes.alcohol_log.confirmation') %></td>
       <td><%= t('activerecord.attributes.alcohol_log.detector_used') %></td>
@@ -43,15 +43,18 @@
 </table>
 </div>
 
-<div class="col-12 col-md-6">
+<div class="col-12">
 <table class="table table-striped m-0">
   <tbody>
     <tr class="table-primary">
+      <td colspan="2"><%= t('addition.name&car number') %></td>
       <td colspan="7"><%= t('addition.after driving') %></td>
       <td colspan="2"><%= t('addition.confirmation field') %></td>
     </tr>
 
     <tr>
+      <td><%= t('activerecord.attributes.alcohol_log.car_id') %></td>
+      <td><%= t('activerecord.attributes.alcohol_log.check_time') %></td>
       <td><%= t('activerecord.attributes.alcohol_log.check_time') %></td>
       <td><%= t('activerecord.attributes.alcohol_log.confirmation') %></td>
       <td><%= t('activerecord.attributes.alcohol_log.detector_used') %></td>
@@ -65,6 +68,8 @@
           
     <% @after_driving_logs.each do |log| %>
       <tr>
+        <td><%= log.user.name %></td>
+        <td><%= log.user.car.private_car&.presence || log.user.car.company_car %></td>
         <td><%= I18n.l(log.check_time, format: :long) %></td>
         <td><%= log.confirmation_i18n %></td>
         <td><%= log.detector_used ? '有' : '無' %></td>
@@ -80,5 +85,4 @@
   </tbody>
 </table>
 </div>
-  </div>
 </div>

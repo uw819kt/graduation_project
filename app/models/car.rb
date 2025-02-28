@@ -6,5 +6,4 @@ class Car < ApplicationRecord
 
   validates :company_car, length: { maximum: 30 }
   validates :private_car, length: { maximum: 30 }
-
 end

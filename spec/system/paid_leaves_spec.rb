@@ -22,7 +22,6 @@ RSpec.describe '有給休暇一覧表示機能', type: :system do
     it '通常の有給適用の日数が月ごとに集計されて表示される' do
       sign_in user
       visit paid_leaves_path
-      binding.irb
       num = [0, 0, 0, 0, 0, 0, 1] 
       page.all('tbody tr').each_with_index do |tr, idx|
         expect(tr.all("td")[14].text).to eq num[idx]

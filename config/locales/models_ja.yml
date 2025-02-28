@@ -30,7 +30,7 @@ ja:
         condition: 体調状態
         log_remarks: 指示事項/その他
         driving_status: 運転前後
-        car_id: 車両番号 
+        car_id: 車両番号等 
       request:
         request_date: 申請日時
         acquisition_date: 取得日

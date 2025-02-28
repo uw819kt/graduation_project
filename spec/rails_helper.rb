@@ -37,6 +37,8 @@ RSpec.configure do |config|
   config.fixture_paths = [
     Rails.root.join('spec/fixtures')
   ]
+  Capybara.javascript_driver = :selenium
+  Capybara.default_driver = :selenium
   config.include Devise::Test::IntegrationHelpers, type: :request
   config.include Devise::Test::ControllerHelpers, type: :controller
   config.include Devise::Test::ControllerHelpers, type: :view
@@ -73,7 +75,7 @@ RSpec.configure do |config|
   config.before(:each) do |example|
     if example.metadata[:type] == :system
       if example.metadata[:js]
-        driven_by :selenium, using: :headless_chrome, screen_size: [1400, 1400]
+        driven_by :selenium, using: :chrome, screen_size: [1400, 1400]
       else
         driven_by :rack_test
       end

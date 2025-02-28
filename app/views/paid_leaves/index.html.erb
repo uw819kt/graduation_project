@@ -47,12 +47,7 @@
       <% end %>
     
       <td>
-      <% if current_user.admin? %>
-        <%= link_to t('addition.Show'), paid_leafe_path(service[:paid_leave].id), class: "btn btn-outline-primary mb-1" %>
-        <%= link_to t('addition.Edit'), edit_approval_path(service[:paid_leave].id), class: "btn btn-outline-primary" %>
-      <% else %>
         <%= link_to t('addition.Show'), paid_leafe_path(service[:paid_leave].id), class: "btn btn-outline-primary" %>  
-      <% end %>
       </td>
     </tr>
   <% end %>

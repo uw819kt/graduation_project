@@ -1,8 +1,11 @@
 class PaidLeave < ApplicationRecord
   belongs_to :user
+
   has_one :grant, dependent: :destroy
+
   has_many :requests
   accepts_nested_attributes_for :requests, allow_destroy: true 
+  
   has_many :approvals
   accepts_nested_attributes_for :approvals, allow_destroy: true 
 
