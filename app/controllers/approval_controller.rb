@@ -23,7 +23,7 @@ class ApprovalController < ApplicationController
     @approval = Approval.find(params[:id])
     if @approval.update(approval_params)
       flash[:notice] = '有給休暇の申請を更新しました'
-      redirect_to paid_leafe_path(@approval)
+      redirect_to paid_leafe_path(@approval.paid_leave_id)
     else
       render :edit, status: :unprocessable_entity
     end

@@ -17,7 +17,7 @@
       <td><%= user.department_i18n %></td>
       <td><%= user.email %></td>
       <td>
-        <% if user.car.private_car.nil? || user.car.private_car.empty? %>
+        <% if user.car.private_car.present? %>
           <%= user.car.company_car %>
         <% else %>
           <%= user.car.private_car %>
