@@ -1,0 +1,40 @@
+<%= form_with(model: @request, url: request_index_path, remote: false) do |form| %>
+  <% if @request.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(@request.errors.count, "error") %> prohibited this paid_leafe from being saved:</h2>
+
+      <ul>
+        <% @request.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <h1><%= t('addition.New paid leave') %></h1>
+  
+    <div>
+      <%= form.label :request_date %>
+      <%= form.date_field :request_date, class: "form-control" %>
+    </div>
+
+    <div>
+      <%= form.label :acquisition_date %>
+      <%= form.date_field :acquisition_date, class: "form-control" %>
+    </div>
+
+    <div>
+      <%= form.label :paid_remarks %>
+      <%= form.text_area :paid_remarks, class: "form-control" %>
+    </div>
+
+    <div>
+      <%= form.submit class: "btn btn-outline-primary mt-4" %>
+    </div>
+<% end %>
+
+<br>
+
+<div>
+  <%= link_to t('addition.Back'), paid_leaves_path, class: "text-decoration-none" %>
+</div>

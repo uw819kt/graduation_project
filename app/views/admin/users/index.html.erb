@@ -1,0 +1,33 @@
+<h1><%= t('addition.Users') %></h1>
+
+<table class="table table-striped">
+  <tbody>
+    <tr class="table-primary">
+      <td><%= t('activerecord.attributes.user.name') %></td>
+      <td><%= t('activerecord.attributes.user.department') %></td>
+      <td><%= t('activerecord.attributes.user.email') %></td>
+      <td><%= t('activerecord.attributes.alcohol_log.car_id') %></td>
+      <td><%= t('activerecord.attributes.paid_leave.joining_date') %></td>
+      <td></td>
+    </tr>
+
+    <tr>
+    <% @users.each do |user| %>
+      <td><%= user.name %></td>
+      <td><%= user.department_i18n %></td>
+      <td><%= user.email %></td>
+      <td><%= user.car.private_car&.presence || user.car.company_car %></td>
+      <td>
+        <%= I18n.l(user.paid_leave.joining_date, format: :middle) %>
+      </td>
+    
+      <td>
+        <div>
+          <%= link_to t('addition.Edit'), edit_admin_user_path(user), class: "btn btn-outline-primary btn-sm mb-1" %>
+          <%= button_to t('addition.Destroy'), admin_user_path(user), method: :delete, data: { turbo_method: :get, turbo_confirm: 'Are you sure?' }, class: "btn btn-outline-danger btn-sm" %>
+        </div>
+      </td> 
+    </tr>
+    <% end %>
+  <tbody>
+</table>

@@ -1,0 +1,99 @@
+<%= form_with(model: user) do |form| %>
+  <% if user.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(user.errors.count, "error") %> prohibited this user from being saved:</h2>
+
+      <ul>
+        <% user.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+<h2>basic information</h2>
+
+<%= form_with model: @user do |form| %>
+  <div>
+    <%= form.label :name %>
+    <%= form.text_field :name %>
+  </div>
+
+  <div>
+    <%= form.label :email, style: "display: block" %>
+    <%= form.text_field :email %>
+  </div>
+
+  <div>
+    <%= form.label :department %>
+    <%= form.select :department, @user.class.departments.keys, { include_blank: true } %>
+  </div>
+
+  <div>
+    <%= form.label :password_digest %>
+    <%= form.text_field :password_digest %>
+  </div>
+<% end %>
+
+<%= form.fields_for :paid_leaves do |paid_leaves_form| %>
+  <div>
+    <%= paid_leaves_form.label :joining_date %>
+    <%= paid_leaves_form.date_field :joining_date %>
+  </div>
+
+  <div>
+      <%= paid_leaves_form.label :part_time %>
+      <%= paid_leaves_form.check_box :part_time, {checked: false}, true, false  %>
+  </div>
+
+  <div>
+    <%= paid_leaves_form.label :classification %>
+    <%= paid_leaves_form.select :classification, @paid_leave.class.classifications.keys, { include_blank: true } %>
+  </div>
+<% end %>
+
+<%= form.fields_for :cars do |cars_form| %>
+  <div>
+    <%= cars_form.label :company_car %>
+    <%= cars_form.text_field :company_car %>
+  </div>
+
+  <div>
+    <%= cars_form.label :private_car %>
+    <%= cars_form.text_field :private_car %>
+  </div>
+<% end %>
+
+<h2>paid leave information</h2>
+
+<%= form.fields_for :paid_leaves do |paid_leaves_form| %>
+  <div>
+    <%= paid_leaves_form.label :base_date %>
+    <%= paid_leaves_form.date_field :base_date %>
+  </div>
+
+  <div>
+    <%= paid_leaves_form.label :possession %>
+    <%= paid_leaves_form.text_field :possession %>
+  </div>
+
+  <div>
+  <%= paid_leaves_form.label :granted_piece %> <!-- scheduled days -->
+  <%= paid_leaves_form.text_field :granted_piece %> # scheduled days
+  </div>
+
+  <div>
+  <%= paid_leaves_form.label :granted_piece %> <!-- carry over -->
+  <%= paid_leaves_form.text_field :granted_piece %> # carry over
+  </div>
+
+  <div>
+  <%= paid_leaves_form.label :granted_piece %>
+  <%= paid_leaves_form.text_field :granted_piece %>
+  </div>
+<% end %>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>

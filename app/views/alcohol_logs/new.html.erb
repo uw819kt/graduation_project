@@ -1,0 +1,54 @@
+<div class="row">
+  <div class="col-8">
+    <%= form_with(model: @alcohol_log, remote: false) do |form| %>
+    
+      <% if @alcohol_log.errors.any? %>
+        <div class="alert alert-danger" role="alert">
+          <ul>
+            <% @alcohol_log.errors.each do |error| %>
+              <li><%= error.full_message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <h1><%= t('addition.New alcohol log') %></h1>
+
+      <div>
+        <%= form.label :driving_status %>
+        <%= form.select :driving_status, @alcohol_log.class.driving_statuses.keys.map {|k| [I18n.t("enums.alcohol_log.driving_status.#{k}"), k]}, { include_blank: true }, class: "form-control" %>
+      </div>
+
+      <div>
+        <%= form.label :confirmation %>
+        <%= form.select :confirmation, @alcohol_log.class.confirmations.keys.map {|k| [I18n.t("enums.alcohol_log.confirmation.#{k}"), k]}, {}, class: "form-control" %>
+      </div>
+
+      <div>
+        <%= form.label :detector_used %>
+        <%= form.check_box :detector_used, {checked: true}, true, false  %>
+      </div>
+
+      <div>
+        <%= form.label :result %>
+        <%= form.text_field :result, class: "form-control", placeholder: "例）0.00" %>
+      </div>
+
+      <div>
+        <%= form.label :condition %>
+        <%= form.select :condition, @alcohol_log.class.conditions.keys.map {|k| [I18n.t("enums.alcohol_log.condition.#{k}"), k]}, {}, class: "form-control" %>
+      </div>
+
+      <div>
+        <%= form.label :log_remarks %>
+        <%= form.text_area :log_remarks, class: "form-control", placeholder: "特記事項あれば記入" %>
+      </div>
+
+      <%= form.submit class: "btn btn-outline-primary mt-4" %>
+    <% end %>
+
+    <div>
+      <%= link_to t('addition.Back'), alcohol_logs_path, class: "text-decoration-none" %>
+    </div>
+  </div>
+</div>

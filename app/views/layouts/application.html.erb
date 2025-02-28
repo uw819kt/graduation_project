@@ -6,11 +6,49 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
-    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <%= javascript_importmap_tags %><!-- エラー出るためコメントアウト→解除 -->
+    <%= javascript_include_tag "/assets/application.js", "data-turbo-track": "reload", defer: true %>
+
   </head>
 
   <body>
+    <header>
+      <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
+        <a class="navbar-brand">Track Ease</a>
+          <% if user_signed_in? %>
+            <% if current_user.admin? %>
+              <div class="d-flex justify-content-end column-gap-3">
+                <%= link_to t('addition.nav.admin user index'), admin_users_path, class: "text-decoration-none text-primary" %>
+                <%= link_to t('addition.nav.admin user new'), new_admin_user_path, class: "text-decoration-none text-primary" %>
+                <%= link_to t('addition.nav.alcohole log index'), alcohol_logs_path, class: "text-decoration-none text-primary" %>
+                <%= link_to t('addition.nav.alcohole log new'), new_alcohol_log_path, class: "text-decoration-none text-primary" %>
+                <%= link_to t('addition.nav.paid leave new'), new_approval_path, class: "text-decoration-none text-primary" %>
+                <%= link_to t('addition.nav.paid leave index'), paid_leaves_path, class: "text-decoration-none text-primary" %>
+                <%= button_to t('addition.nav.log out'), destroy_user_session_path, method: :delete, data: { turbo_method: :delete }, class: "btn btn-outline-info btn-sm" %>
+              </div>
+            <% else %>
+              <div class="d-flex justify-content-end column-gap-3">
+                <%= link_to t('addition.nav.alcohole log index'), alcohol_logs_path, class: "text-decoration-none text-primary" %>
+                <%= link_to t('addition.nav.alcohole log new'), new_alcohol_log_path, class: "text-decoration-none text-primary" %>
+                <%= link_to t('addition.nav.paid leave new'), new_approval_path, class: "text-decoration-none text-primary" %>
+                <%= link_to t('addition.nav.paid leave index'), paid_leaves_path, class: "text-decoration-none text-primary" %>
+                <%= button_to t('addition.nav.log out'), destroy_user_session_path, method: :delete, data: { turbo_method: :delete }, class: "btn btn-outline-info btn-sm" %>
+            </div>
+            <% end %>
+          <% end %>
+      </nav>
+    </header>
+
+      <% flash.each do |key, message| %>
+        <div class="alert alert-<%= key == 'notice' ? 'success' : 'danger' %>">
+          <%= message %>
+        </div>
+      <% end %>
+
+  <div class='container mt-5'>  
     <%= yield %>
+  </div>
   </body>
 </html>

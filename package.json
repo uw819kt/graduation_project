@@ -1,11 +1,19 @@
 {
-  "name": "track-ease",
+  "name": "app",
   "private": true,
-  "dependencies": {
-    "@rails/ujs": "^6.0.0",
-    "turbolinks": "^5.2.0",
-    "@rails/activestorage": "^6.0.0",
-    "@rails/actioncable": "^6.0.0"
+  "devDependencies": {
+    "@hotwired/turbo-rails": "^7.0.0",
+    "bootstrap": "^5.3.0",
+    "esbuild": "^0.18.0"
   },
-  "version": "0.1.0"
+  "scripts": {
+    "build": "esbuild app/javascript/*.* --bundle --sourcemap --format=esm --outdir=app/assets/builds --public-path=/assets",
+    "build:css": "esbuild app/assets/stylesheets/application.css --outdir=app/assets/builds/application-build.css"
+  },
+  "dependencies": {
+    "@popperjs/core": "^2.11.8"
+  },
+  "engines": {
+    "node": "18.20.5"
+  }
 }
