@@ -18,12 +18,12 @@
   <%= fields_for @user do |form| %>
     <div>
       <%= form.label :name %>
-      <%= form.text_field :name, class: "form-control" %>
+      <%= form.text_field :name, class: "form-control", placeholder: "例）〇〇 〇〇" %>
     </div>
 
     <div>
       <%= form.label :email %>
-      <%= form.text_field :email, class: "form-control" %>
+      <%= form.text_field :email, class: "form-control", placeholder: "例）aa@example.com" %>
     </div>
   
     <div>
@@ -50,12 +50,12 @@
   <%= fields_for form.object.car do |form| %>
     <div>
       <%= form.label :company_car %>
-      <%= form.text_field :company_car, class: "form-control" %>
+      <%= form.text_field :company_car, class: "form-control", placeholder: "例)下関111あ1111" %>
     </div>
 
     <div>
       <%= form.label :private_car %>
-      <%= form.text_field :private_car, class: "form-control" %>
+      <%= form.text_field :private_car, class: "form-control", placeholder: "例)下関111あ1111" %>
     </div>
   <% end %>
 

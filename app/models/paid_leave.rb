@@ -11,7 +11,7 @@ class PaidLeave < ApplicationRecord
 
   validates :joining_date, presence: true
   validates :base_date, presence: true
-  validates :part_time, inclusion: { in: [true, false] }
+  validates :part_time, presence: { allow_nil: true, allow_blank: true }
   validates :classification, presence: { allow_nil: true, allow_blank: true }, on: [:create, :update]                      
 
 
