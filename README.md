@@ -8,7 +8,7 @@
 ## 実行手順
 ``` bash
 $ git clone git@github.com:uw819kt/graduation_project.git
-$ cd graduation_project/teack_ease/track_ease
+$ cd graduation_project/track_ease/track_ease
 $ bundle install
 $ rails db:create && rails db:migrate
 $ rails s
